@@ -1,0 +1,11 @@
+.app-movie-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+.app-movie {
+    width: 10vw;
+    margin: 10px;
+
+}
