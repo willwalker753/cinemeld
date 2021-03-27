@@ -3,9 +3,9 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    margin-top: 10px;
 }
 .app-movie {
     width: 10vw;
     margin: 10px;
-
 }

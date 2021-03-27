@@ -1,0 +1,24 @@
+#nav-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    background-color: rgb(26, 26, 26);
+}
+#nav-box > * {
+    padding: 10px;
+    margin: 0;
+}
+#nav-box > *:hover {
+    cursor: pointer;
+    color: #E50914;
+}
+#nav-box > i {
+    font-size: 21px;
+}
+#nav-logo {
+    width: 30px;
+    margin-top: 10px;
+}
