@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Nav from './components/Nav';
 import axios from 'axios';
-import apiURL from './components/apiURL';
+import apiURL from './components/util/apiURL';
+import movieDataConverter from './components/util/functions';
 import InfiniteScroll from "react-infinite-scroll-component";
 import './app.css';
 
@@ -25,19 +26,21 @@ export default class App extends Component {
       .then(res => {
         movieList = movieList.concat(res.data);
         movieList = this.validatePoster(movieList);
+        movieList = movieDataConverter(movieList);
       })
     this.setState({ movieList: movieList });
   }
-  getMoreData = () => {
+  getMoreData = async() => {
     if(this.state.page < 50) {
-      axios.get(apiURL()+'/home?page='+this.state.page)
+      await axios.get(apiURL()+'/home?page='+this.state.page)
       .then(res => {
-        let tempMovieList = this.state.movieList;
-        tempMovieList = this.validatePoster(tempMovieList);
-        tempMovieList = tempMovieList.concat(res.data);
+        let tempMovieList = this.validatePoster(res.data);
+        tempMovieList = movieDataConverter(tempMovieList);
+        let movieList = this.state.movieList;
+        movieList = movieList.concat(tempMovieList);
         let nextPage = this.state.page + 1;
         this.setState({ 
-          movieList: tempMovieList,
+          movieList: movieList,
           page: nextPage
         });
       })
@@ -64,14 +67,36 @@ export default class App extends Component {
           loader={<></>}
         >
           <div className='app-movie-box'>
-            {movieList.map((movie, index) => (
-              <img 
-                key={index} 
-                className ='app-movie' 
-                src={'https://image.tmdb.org/t/p/w500/'+movie.poster_path} 
-                alt={movie.title}>
-              </img>
-            ))}
+            <div className='app-img-box'>
+              {movieList.map((movie, index) => (
+                <img 
+                  key={index} 
+                  className ='app-movie' 
+                  src={'https://image.tmdb.org/t/p/w500/'+movie.poster_path} 
+                  alt={movie.title}>
+                </img>
+              ))}
+            </div>
+            <div className='app-overlay-box'>
+              {movieList.map((movie, index) => (
+                <div key={index} className ='app-overlay hidden-movie'>
+                  <h3>{movie.title}</h3>
+                  <p className='app-movie-date'>{movie.release_date}</p>
+                  <p>
+                    <span className={'app-movie-vote-'+movie.vote_color}>
+                      {movie.vote_average}
+                      </span>  
+                    {movie.vote_count+' reviews'}
+                  </p>
+                  <div className='app-genre-box'>
+                    {movie.genre_ids.map((genre, index) =>(
+                      <p className={'app-genre-'+genre.color}>{genre.name}</p>
+                    ))}
+                  </div>
+                  
+                </div>
+              ))}
+            </div>
           </div>
         </InfiniteScroll>
       </>

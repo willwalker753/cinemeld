@@ -1,12 +1,84 @@
-.app-movie-box {
+.hidden-movie {
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+}
+.hidden-movie:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+.app-img-box, .app-overlay-box {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    top: 0;
     margin-top: 10px;
     padding-left: 50px;
 }
-.app-movie {
-    width: 10vw;
+.app-movie, .app-overlay {
+    width: 181px;
+    height: 270px;
     margin: 10px;
+}
+.app-overlay {
+    background-color: rgba(34, 34, 34, 0.863);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.app-overlay > h3 {
+    text-align: center;
+}
+.app-movie-date {
+    margin: 0;
+}
+.app-movie-vote-red {
+    border: 2px solid rgb(207, 0, 0);
+    color: rgb(207, 0, 0);
+}
+.app-movie-vote-yellow {
+    border: 2px solid rgb(189, 186, 2);
+    color: rgb(189, 186, 2);
+}
+.app-movie-vote-green {
+    border: 2px solid rgb(36, 156, 0);
+    color: rgb(36, 156, 0);
+}
+.app-movie-vote-green, .app-movie-vote-yellow, .app-movie-vote-red {
+    width: 26px;
+    height: 26px;
+    border-radius: 13px;
+    font-weight: bold;
+    padding: 2px;
+    font-size: 14px;
+    margin-right: 8px;
+}
+.app-genre-box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px 0 5px;
+}
+.app-genre-box > p {
+    margin: 5px 5px 0 0;
+    padding: 1px 3px 3px 3px;
+    border-radius: 5px;
+}
+.app-genre-0 {
+    background-color: #795c3f;
+}
+.app-genre-1 {
+    background-color: #3c3e75;
+}
+.app-genre-2 {
+    background-color: #6b3839;
+}
+.app-genre-3 {
+    background-color: #3b6e3a;
+}
+.app-genre-4 {
+    background-color: #6d3839;
 }
