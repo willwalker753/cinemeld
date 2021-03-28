@@ -3,7 +3,7 @@ import Nav from './components/Nav';
 import axios from 'axios';
 import apiURL from './components/util/apiURL';
 import movieDataConverter from './components/util/functions';
-import InfiniteScroll from "react-infinite-scroll-component";
+import InfiniteScroll from 'react-infinite-scroll-component';
 import './app.css';
 
 export default class App extends Component {
@@ -96,7 +96,7 @@ export default class App extends Component {
                   
                 </div>
               ))}
-            </div>
+            </div>       
           </div>
         </InfiniteScroll>
       </>

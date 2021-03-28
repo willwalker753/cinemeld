@@ -48,6 +48,9 @@ export default class Search extends Component {
   render() {
     let { genreList, redirectSearch, searchTerm } = this.state;
     if(redirectSearch) {
+      if(window.location.pathname.includes('search')) {
+        window.location.reload();
+      }
       return <Redirect to={'/search/'+searchTerm} />
     }
     return (
@@ -69,7 +72,7 @@ export default class Search extends Component {
                 <p id='genre-type-movie' onClick={() => this.onTypeChange('movie')} className='checked'>Movie</p>
                 <p id='genre-type-tv' onClick={() => this.onTypeChange('tv')} className='unchecked'>TV Show</p>
                 <select>
-                  <option disabled defaultValue>Genre</option>
+                  <option disabled defaultValue selected>Genre</option>
                     {genreList.map((item, index) => (
                         <option key={index} value={item.id}>{item.name}</option>
                     ))}
