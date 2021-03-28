@@ -28,10 +28,10 @@ class TextSearch extends Component {
         })
       await axios.get(apiURL()+'/search?term='+term+'&page=2')
         .then(res => {
-          movieList = movieList.concat(res.data)
+          movieList = movieList.concat(res.data);
           movieList = this.validatePoster(movieList);
         })
-      this.setState({ movieList: movieList })
+      this.setState({ movieList: movieList });
     }
   }
   getMoreData() {

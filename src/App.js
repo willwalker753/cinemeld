@@ -15,18 +15,18 @@ export default class App extends Component {
     this.getMoreData = this.getMoreData.bind(this);
     this.validatePoster = this.validatePoster.bind(this);
   }
-  componentDidMount() {
-    axios.get(apiURL()+'/home?page=1')
+  async componentDidMount() {
+    let movieList = [];
+    await axios.get(apiURL()+'/home?page=1')
       .then(res => {
-        this.setState({ movieList: res.data })
-    });
-    axios.get(apiURL()+'/home?page=2')
+        movieList = res.data;
+      })
+    await axios.get(apiURL()+'/home?page=2')
       .then(res => {
-        let tempMovieList = this.state.movieList;
-        tempMovieList = tempMovieList.concat(res.data);
-        tempMovieList = this.validatePoster(tempMovieList);
-        this.setState({ movieList: tempMovieList })
-    });
+        movieList = movieList.concat(res.data);
+        movieList = this.validatePoster(movieList);
+      })
+    this.setState({ movieList: movieList });
   }
   getMoreData = () => {
     if(this.state.page < 50) {
