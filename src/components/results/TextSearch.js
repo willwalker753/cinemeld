@@ -1,36 +1,42 @@
 import React, { Component } from 'react';
-import Nav from './components/nav/Nav';
+import { withRouter } from 'react-router';
 import axios from 'axios';
-import apiURL from './components/util/apiURL';
 import InfiniteScroll from "react-infinite-scroll-component";
-import './app.css';
+import apiURL from '../util/apiURL';
+import Nav from '../nav/Nav';
 
-export default class App extends Component {
+class TextSearch extends Component {
   constructor(props) {
     super(props)
     this.state = {
       movieList: [],
+      term: '',
       page: 3,
+      hasMore: true
     }
     this.getMoreData = this.getMoreData.bind(this);
     this.validatePoster = this.validatePoster.bind(this);
   }
-  componentDidMount() {
-    axios.get(apiURL()+'/home?page=1')
-      .then(res => {
-        this.setState({ movieList: res.data })
-    });
-    axios.get(apiURL()+'/home?page=2')
-      .then(res => {
-        let tempMovieList = this.state.movieList;
-        tempMovieList = tempMovieList.concat(res.data);
-        tempMovieList = this.validatePoster(tempMovieList);
-        this.setState({ movieList: tempMovieList })
-    });
+  async componentDidMount() {
+    let term = this.props.match.params.term;
+    let movieList = [];
+    this.setState({ term: term })
+    if(term !== '') {
+      await axios.get(apiURL()+'/search?term='+term+'&page=1')
+        .then(res => {
+          movieList = res.data;
+        })
+      await axios.get(apiURL()+'/search?term='+term+'&page=2')
+        .then(res => {
+          movieList = movieList.concat(res.data)
+          movieList = this.validatePoster(movieList);
+        })
+      this.setState({ movieList: movieList })
+    }
   }
-  getMoreData = () => {
+  getMoreData() {
     if(this.state.page < 50) {
-      axios.get(apiURL()+'/home?page='+this.state.page)
+      axios.get(apiURL()+'/search?term='+this.state.term+'&page='+this.state.page)
       .then(res => {
         let tempMovieList = this.state.movieList;
         tempMovieList = this.validatePoster(tempMovieList);
@@ -41,26 +47,31 @@ export default class App extends Component {
           page: nextPage
         });
       })
+      .catch(error => {
+        if(error.repsonse.status === 404) {
+          this.setState({ hasMore: false})
+        }
+      })
     }
   }
   validatePoster = data => {
     let newArr = [];
     for(let i=0; i<data.length; i++) {
-      if(data[i].poster_path !== null || data[i].poster_path !== undefined) {
+      if(data[i].poster_path !== null && data[i].poster_path !== undefined) {
         newArr.push(data[i]);
       }
     }
     return newArr;
   }
   render() {
-    let { movieList } = this.state;
+    let { movieList, hasMore } = this.state;
     return (
       <>
         <Nav />
         <InfiniteScroll
-          dataLength={this.state.movieList.length}
+          dataLength={movieList.length}
           next={this.getMoreData}
-          hasMore={true}
+          hasMore={hasMore}
           loader={<></>}
         >
           <div className='app-movie-box'>
@@ -79,3 +90,4 @@ export default class App extends Component {
   }
 }
 
+export default withRouter(TextSearch);

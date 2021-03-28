@@ -1,3 +1,6 @@
+#nav-box-outer {
+    display: flex;
+}
 #nav-box {
     display: flex;
     flex-direction: column;
@@ -5,6 +8,7 @@
     height: 100%;
     position: fixed;
     top: 0;
+    z-index: 2;
     background-color: rgb(26, 26, 26);
 }
 #nav-box > * {
