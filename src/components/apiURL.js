@@ -5,7 +5,7 @@ const apiURL = () => {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
         base = 'http://localhost:8000';
     } else {
-        base = 'https://cinemeld-api.herokuapp.com/';
+        base = 'https://cinemeld-api.herokuapp.com';
     }
     return base;
 }
