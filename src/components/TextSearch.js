@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import axios from 'axios';
 import InfiniteScroll from "react-infinite-scroll-component";
-import apiURL from '../util/apiURL';
-import Nav from '../nav/Nav';
+import apiURL from './apiURL';
+import Nav from './Nav';
 
 class TextSearch extends Component {
   constructor(props) {

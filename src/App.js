@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Nav from './components/nav/Nav';
+import Nav from './components/Nav';
 import axios from 'axios';
-import apiURL from './components/util/apiURL';
+import apiURL from './components/apiURL';
 import InfiniteScroll from "react-infinite-scroll-component";
 import './app.css';
 
