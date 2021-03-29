@@ -16,6 +16,9 @@
     margin-top: 10px;
     padding-left: 50px;
 }
+.app-movie {
+    background-color: rgba(65, 63, 63, 0.863);
+}
 .app-movie, .app-overlay {
     width: 181px;
     height: 270px;

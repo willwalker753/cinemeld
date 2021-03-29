@@ -9,22 +9,16 @@ const movieDataConverter = data => {
                 throw 'no release date';
             }
             if(data[i].media_type === 'movie' || data[i].first_air_date === undefined) {
+                data[i].media_type = 'movie';
                 year = data[i].release_date.slice(0,4);
                 month = data[i].release_date.slice(5,7); 
                 day = data[i].release_date.slice(8); 
-                if(data[i].title.length >= 30) {
-                    data[i].title.slice(0,25);
-                    data[i].title = data[i].title + '...';
-                }
             }
             else if(data[i].media_type === 'tv' || data[i].release_date === undefined) {
+                data[i].media_type = 'tv';
                 year = data[i].first_air_date.slice(0,4);
                 month = data[i].first_air_date.slice(5,7); 
                 day = data[i].first_air_date.slice(8);
-                if(data[i].name.length >= 30) {
-                    data[i].name.slice(0,25);
-                    data[i].name = data[i].name + '...';
-                } 
                 data[i].title = data[i].name;
             }
             switch(month) {
