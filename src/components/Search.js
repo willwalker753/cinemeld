@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { movieGenreList, tvGenreList } from './util/constants';
+import { connect } from 'react-redux';
 import './search.css';
 
-export default class Search extends Component {
+class Search extends Component {
   constructor(props) {
     super(props)
     this.state = {
         genreList: movieGenreList,
         searchTerm: '',
         genreId: '',
+        media: 'tv',
         genreType: 'movie',
         redirectSearch: false,
         redirectGenre: false
@@ -24,6 +26,8 @@ export default class Search extends Component {
     this.setState({ searchTerm: e.target.value });
   }
   onTypeChange = type => {
+    this.props.changeMedia(type);
+    console.log(this.props.media);
     if(type === 'movie') {
         this.setState({ genreList: movieGenreList, genreType: 'movie' });
         document.getElementById('genre-type-movie').classList.add('checked');
@@ -99,3 +103,16 @@ export default class Search extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  const { mediaType } = state;
+  return { media: mediaType };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+      changeMedia: data => dispatch({ type: 'CHANGE_MEDIA', payload: data })
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);
