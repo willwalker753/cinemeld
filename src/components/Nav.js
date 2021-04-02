@@ -21,6 +21,7 @@ export default class Nav extends Component {
     let searchClass = document.getElementById('search-box-outer');
     if(searchClass.className === 'hidden') {
       searchClass.className = '';
+      document.getElementById('details-component').classList.add('hidden');
     } else {
       searchClass.className = 'hidden';
     }

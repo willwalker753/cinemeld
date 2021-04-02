@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Nav from './components/Nav';
+import Details from './components/Details';
 import axios from 'axios';
 import apiURL from './components/util/apiURL';
 import movieDataConverter from './components/util/functions';
@@ -12,9 +13,12 @@ export default class App extends Component {
     this.state = {
       movieList: [],
       page: 3,
+      detailsMediaType: '',
+      detailsId: '',
     }
     this.getMoreData = this.getMoreData.bind(this);
     this.validatePoster = this.validatePoster.bind(this);
+    this.movieClick = this.movieClick.bind(this);
   }
   async componentDidMount() {
     let movieList = [];
@@ -55,6 +59,14 @@ export default class App extends Component {
     }
     return newArr;
   }
+  movieClick = (media_type, id) => {
+    console.log(media_type, id);
+    this.setState({
+      detailsMediaType: media_type,
+      detailsId: id,
+    });
+    document.getElementById('details-component').classList.remove('hidden');
+  }
   render() {
     let { movieList } = this.state;
     return (
@@ -72,14 +84,14 @@ export default class App extends Component {
                 <img 
                   key={index} 
                   className ='app-movie' 
-                  src={'https://image.tmdb.org/t/p/w500/'+movie.poster_path} 
+                  src={'https://image.tmdb.org/t/p/w500'+movie.poster_path} 
                   alt={movie.title}>
                 </img>
               ))}
             </div>
             <div className='app-overlay-box'>
               {movieList.map((movie, index) => (
-                <div key={index} className ='app-overlay hidden-movie'>
+                <div key={index} className ='app-overlay hidden-movie' onClick={() => this.movieClick(movie.media_type, movie.id)}>
                   <h3>{movie.title}</h3>
                   <p className='app-movie-date'>{movie.release_date}</p>
                   <p>
@@ -93,12 +105,13 @@ export default class App extends Component {
                       <p className={'app-genre-'+genre.color}>{genre.name}</p>
                     ))}
                   </div>
-                  
+                  {/* <span id={movie.media_type+' '+movie.id} className='data-only'></span> */}
                 </div>
               ))}
             </div>       
           </div>
         </InfiniteScroll>
+        <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} />
       </>
     )
   }
