@@ -13,7 +13,7 @@ class Details extends Component {
         this.formatMovieData = this.formatMovieData.bind(this);
         this.closeDetails = this.closeDetails.bind(this);
     }
-    async componentWillReceiveProps() {
+    async componentDidUpdate() {
         await axios.get(apiURL()+'/details?type='+this.props.media_type+'&id='+this.props.id)
         .then(res => {
             let data = res.data;
@@ -77,6 +77,20 @@ class Details extends Component {
             data.vote_average = vote;
         }
         data.vote_color = voteColor;
+        let hours = data.runtime / 60;
+        hours = hours.toString().slice(0,1);
+        if(hours === '0') {
+            hours = ''
+        } else if(hours === '1') {
+            hours = hours + ' hour ';
+        } else {
+            hours = hours + ' hours ';
+        }
+        let minutes = data.runtime % 60;
+        data.runtime = {
+            hours: hours,
+            minutes: minutes
+        }
         return data;
     }
     closeDetails = () => {
@@ -95,7 +109,7 @@ class Details extends Component {
                             <div>
                                 <h3>{movieDetails.title}</h3>
                                 <p>{movieDetails.tagline}</p>
-                                <p>{movieDetails.runtime} minutes</p>
+                                <p>{movieDetails.runtime.hours}{movieDetails.runtime.minutes} minutes</p>
                                 <div id='details-header-subrow'>
                                     <p>
                                         <span className={'app-movie-vote-'+movieDetails.vote_color}>
