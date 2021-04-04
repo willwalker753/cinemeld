@@ -4,7 +4,7 @@ import Details from './components/Details';
 import Loading from './components/Loading';
 import axios from 'axios';
 import apiURL from './components/util/apiURL';
-import movieDataConverter from './components/util/functions';
+import movieDataConverter from './components/util/movieDataConverter';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import './app.css';
 

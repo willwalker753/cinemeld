@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import InfiniteScroll from "react-infinite-scroll-component";
-import movieDataConverter from './util/functions';
+import movieDataConverter from './util/movieDataConverter';
 import apiURL from './util/apiURL';
 import Nav from './Nav';
 import Details from './Details';
@@ -41,6 +42,11 @@ class TextSearch extends Component {
       this.setState({ movieList: movieList });
     }
   }
+  componentDidUpdate(oldProps) {
+    if(oldProps.term !== this.props.term) {
+      window.location.reload();
+    }
+  }
   getMoreData() {
     if(this.state.page < 50) {
       axios.get(apiURL()+'/search?term='+this.state.term+'&page='+this.state.page)
@@ -77,7 +83,7 @@ class TextSearch extends Component {
       detailsId: id,
     });
     document.getElementById('loading-component').classList.remove('hidden');
-    setTimeout(function(){
+    setTimeout(function() {
       document.getElementById('loading-component').classList.add('hidden');
       document.getElementById('details-component').classList.remove('hidden');
     }, 300);
@@ -133,6 +139,16 @@ class TextSearch extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  const { mediaType, termName } = state;
+  return { media: mediaType, term: termName };
+}
 
+const mapDispatchToProps = dispatch => {
+  return {
+      changeMedia: data => dispatch({ type: 'CHANGE_MEDIA', payload: data }),
+      searchTerm: data => dispatch({ type: 'CHANGE_TERM', payload: data })
+  }
+}
 
-export default withRouter(TextSearch);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TextSearch));

@@ -18,12 +18,13 @@ export default class Nav extends Component {
 
   }
   search = () => {
-    let searchClass = document.getElementById('search-box-outer');
-    if(searchClass.className === 'hidden') {
-      searchClass.className = '';
+    let searchElement = document.getElementById('search-box-outer');
+    if(searchElement.className && searchElement.className === 'hidden') {
+      document.getElementById('search-box-outer').classList.remove('hidden');
+      document.getElementById('details-component').classList.remove('hidden');
       document.getElementById('details-component').classList.add('hidden');
     } else {
-      searchClass.className = 'hidden';
+      document.getElementById('search-box-outer').classList.add('hidden');
     }
   }
   render() {
@@ -31,12 +32,12 @@ export default class Nav extends Component {
       <div id='nav-box-outer'>
         <div id='nav-box'>
           <a href='/'>
-              <img 
-                  id='nav-logo' 
-                  title='Home'
-                  src='https://github.com/willwalker753/cinemeld/blob/main/public/android-chrome-192x192.png?raw=true' 
-                  alt='logo'>
-              </img>
+            <img 
+              id='nav-logo' 
+              title='Home'
+              src='https://github.com/willwalker753/cinemeld/blob/main/public/android-chrome-192x192.png?raw=true' 
+              alt='logo'>
+            </img>
           </a>
           <i className="fas fa-user-circle" title='Account' onClick={this.account}></i>
           <i className="fas fa-search" title='Search' onClick={this.search}></i>

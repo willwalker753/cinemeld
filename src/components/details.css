@@ -76,5 +76,19 @@
 }
 #details-imdb-link > i {
     font-size: 30px;
+    margin-top: 3px;
     color: yellow;
+}
+.details-genre-box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px 0 5px;
+}
+.details-genre-box > p {
+    margin: 5px 5px 0 0;
+    padding: 1px 3px 3px 3px;
+    border-radius: 5px;
+    text-shadow: none;
 }

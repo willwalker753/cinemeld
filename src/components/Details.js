@@ -81,7 +81,7 @@ class Details extends Component {
         let hours = data.runtime / 60;
         hours = hours.toString().slice(0,1);
         if(hours === '0') {
-            hours = ''
+            hours = '';
         } else if(hours === '1') {
             hours = hours + ' hour ';
         } else {
@@ -92,7 +92,18 @@ class Details extends Component {
             hours: hours,
             minutes: minutes
         }
+        for(let g=0; g<data.genres.length; g++) {
+            if(g<3) {
+                data.genres[g].color = Math.floor(Math.random() * 5);         
+            } 
+            else {
+                data.genres[g].name = '';
+            }
+        }
         return data;
+    }
+    formatTvData = () => {
+
     }
     closeDetails = () => {
         document.getElementById('details-component').classList.add('hidden');
@@ -119,13 +130,40 @@ class Details extends Component {
                                         {movieDetails.vote_count+' reviews'}
                                     </p>
                                     <a id='details-imdb-link' href={'https://www.imdb.com/title/'+movieDetails.imdb_id} target='_blank' rel='noreferrer'><i className="fab fa-imdb"></i></a>
+                                    <div className='details-genre-box'>
+                                        {movieDetails.genres.map((genre, index) =>(
+                                            <p className={'app-genre-'+genre.color}>{genre.name}</p>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </div> 
                         <p>{movieDetails.overview}</p>
                     </div>
-                :
-                ''}
+                : '' }
+                {media_type === 'tv' ?
+                    <div id='details-box-movie'>
+                            <img id='details-backdrop' src={'https://image.tmdb.org/t/p/w500'+movieDetails.backdrop_path} alt='backdrop'></img>
+                            <div id='details-header-row'>
+                                <img src={'https://image.tmdb.org/t/p/w500'+movieDetails.poster_path} alt='backdrop'></img>
+                                <div>
+                                    <h3>{movieDetails.name}</h3>
+                                    <p>{movieDetails.tagline}</p>
+                                    <p>{movieDetails.episode_run_time[0]} minutes per episode</p>
+                                    <div id='details-header-subrow'>
+                                        <p>
+                                            <span className={'app-movie-vote-'+movieDetails.vote_color}>
+                                                {movieDetails.vote_average}
+                                            </span>  
+                                            {movieDetails.vote_count+' reviews'}
+                                        </p>
+                                        <a id='details-imdb-link' href={'https://www.imdb.com/title/'+movieDetails.imdb_id} target='_blank' rel='noreferrer'><i className="fab fa-imdb"></i></a>
+                                    </div>
+                                </div>
+                            </div> 
+                            <p>{movieDetails.overview}</p>
+                        </div>
+                    : '' } 
                 <div id='details-box-close' onClick={this.closeDetails}><i className="fas fa-times"></i></div>
                 </div>
             </div>

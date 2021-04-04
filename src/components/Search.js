@@ -47,7 +47,8 @@ class Search extends Component {
   textSearch = e => {
     e.preventDefault();
     if(this.state.searchTerm !== '') {
-      this.setState({ redirectSearch: true })
+      this.setState({ redirectSearch: true });
+      this.props.searchTerm(this.state.searchTerm);
     }
   }
   genreSearch = e => {
@@ -55,18 +56,19 @@ class Search extends Component {
       genreId: e.target.value,
       redirectGenre: true
     });
+    this.props.searchTerm(e.target.value);
   }
   render() {
     let { genreList, redirectSearch, searchTerm, redirectGenre, genreId, genreType } = this.state;
     if(redirectSearch) {
       if(window.location.pathname.includes('search')) {
-        window.location.reload();
+        //window.location.reload();
       }
       return <Redirect to={'/search/'+searchTerm} />
     }
     if(redirectGenre) {
       if(window.location.pathname.includes('genre')) {
-        window.location.reload();
+        //window.location.reload();
       }
       return <Redirect to={'/genre/'+genreType+'/'+genreId} />
     }
@@ -110,7 +112,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-      changeMedia: data => dispatch({ type: 'CHANGE_MEDIA', payload: data })
+      changeMedia: data => dispatch({ type: 'CHANGE_MEDIA', payload: data }),
+      searchTerm: data => dispatch({ type: 'CHANGE_TERM', payload: data })
   }
 }
 

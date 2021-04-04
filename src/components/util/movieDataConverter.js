@@ -90,7 +90,5 @@ const movieDataConverter = data => {
     }
     return data;
 }
-    
-
 
 export default movieDataConverter;
