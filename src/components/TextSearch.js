@@ -5,6 +5,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import movieDataConverter from './util/functions';
 import apiURL from './util/apiURL';
 import Nav from './Nav';
+import Details from './Details';
+import Loading from './Loading';
 
 class TextSearch extends Component {
   constructor(props) {
@@ -13,10 +15,13 @@ class TextSearch extends Component {
       movieList: [],
       term: '',
       page: 3,
-      hasMore: true
+      hasMore: true,
+      detailsMediaType: '',
+      detailsId: '',
     }
     this.getMoreData = this.getMoreData.bind(this);
     this.validatePoster = this.validatePoster.bind(this);
+    this.movieClick = this.movieClick.bind(this);
   }
   async componentDidMount() {
     let term = this.props.match.params.term;
@@ -66,6 +71,17 @@ class TextSearch extends Component {
     }
     return newArr;
   }
+  movieClick = (media_type, id) => {
+    this.setState({
+      detailsMediaType: media_type,
+      detailsId: id,
+    });
+    document.getElementById('loading-component').classList.remove('hidden');
+    setTimeout(function(){
+      document.getElementById('loading-component').classList.add('hidden');
+      document.getElementById('details-component').classList.remove('hidden');
+    }, 300);
+  }
   render() {
     let { movieList, hasMore } = this.state;
     return (
@@ -90,7 +106,7 @@ class TextSearch extends Component {
             </div>
             <div className='app-overlay-box'>
               {movieList.map((movie, index) => (
-                <div key={index} className ='app-overlay hidden-movie'>
+                <div key={index} className ='app-overlay hidden-movie' onClick={() => this.movieClick(movie.media_type, movie.id)}>
                   <h3>{movie.title}</h3>
                   <p className='app-movie-date'>{movie.release_date}</p>
                   <p>
@@ -110,6 +126,8 @@ class TextSearch extends Component {
             </div>
           </div>
         </InfiniteScroll>
+        <Loading />
+        <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} />
       </>
     )
   }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Nav from './components/Nav';
 import Details from './components/Details';
+import Loading from './components/Loading';
 import axios from 'axios';
 import apiURL from './components/util/apiURL';
 import movieDataConverter from './components/util/functions';
@@ -60,12 +61,15 @@ export default class App extends Component {
     return newArr;
   }
   movieClick = (media_type, id) => {
-    console.log(media_type, id);
     this.setState({
       detailsMediaType: media_type,
       detailsId: id,
     });
-    document.getElementById('details-component').classList.remove('hidden');
+    document.getElementById('loading-component').classList.remove('hidden');
+    setTimeout(function(){
+      document.getElementById('loading-component').classList.add('hidden');
+      document.getElementById('details-component').classList.remove('hidden');
+    }, 300);
   }
   render() {
     let { movieList } = this.state;
@@ -105,12 +109,12 @@ export default class App extends Component {
                       <p className={'app-genre-'+genre.color}>{genre.name}</p>
                     ))}
                   </div>
-                  {/* <span id={movie.media_type+' '+movie.id} className='data-only'></span> */}
                 </div>
               ))}
             </div>       
           </div>
         </InfiniteScroll>
+        <Loading />
         <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} />
       </>
     )

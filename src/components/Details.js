@@ -13,19 +13,20 @@ class Details extends Component {
         this.formatMovieData = this.formatMovieData.bind(this);
         this.closeDetails = this.closeDetails.bind(this);
     }
-    async componentDidUpdate() {
-        await axios.get(apiURL()+'/details?type='+this.props.media_type+'&id='+this.props.id)
-        .then(res => {
-            let data = res.data;
-            if(this.props.media_type === 'movie') {
-                data = this.formatMovieData(res.data);
-            }
-            this.setState({ 
-                media_type: this.props.media_type,
-                movieDetails: data 
+    async componentDidUpdate(oldProps) {
+        if(oldProps !== this.props) {
+            await axios.get(apiURL()+'/details?type='+this.props.media_type+'&id='+this.props.id)
+            .then(res => {
+                let data = res.data;
+                if(this.props.media_type === 'movie') {
+                    data = this.formatMovieData(res.data);
+                }
+                this.setState({ 
+                    media_type: this.props.media_type,
+                    movieDetails: data 
+                });
             });
-            console.log(data)
-        });
+        }  
     }
     formatMovieData = data => {
         let year = data.release_date.slice(0,4);
@@ -117,7 +118,7 @@ class Details extends Component {
                                         </span>  
                                         {movieDetails.vote_count+' reviews'}
                                     </p>
-                                    <a id='details-imdb-link' href={'https://www.imdb.com/title/'+movieDetails.imdb_id} target='_blank'><i className="fab fa-imdb"></i></a>
+                                    <a id='details-imdb-link' href={'https://www.imdb.com/title/'+movieDetails.imdb_id} target='_blank' rel='noreferrer'><i className="fab fa-imdb"></i></a>
                                 </div>
                             </div>
                         </div> 

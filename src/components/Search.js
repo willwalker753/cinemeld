@@ -27,7 +27,6 @@ class Search extends Component {
   }
   onTypeChange = type => {
     this.props.changeMedia(type);
-    console.log(this.props.media);
     if(type === 'movie') {
         this.setState({ genreList: movieGenreList, genreType: 'movie' });
         document.getElementById('genre-type-movie').classList.add('checked');

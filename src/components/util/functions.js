@@ -1,7 +1,6 @@
 import genreList from './constants';
 
 const movieDataConverter = data => {
-    console.log(data)
     for(let i=0; i<data.length; i++) {
         let year='', month='', day='';
         try {
