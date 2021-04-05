@@ -7,6 +7,7 @@ import './index.css';
 import App from './App';
 import TextSearch from './components/TextSearch';
 import Genre from './components/Genre';
+import Similar from './components/Similar';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
@@ -27,6 +28,9 @@ ReactDOM.render(
         </Route>
         <Route exact path='/genre/:type/:id'>
           <Genre />
+        </Route>
+        <Route exact path='/similar/:type/:id'>
+          <Similar />
         </Route>
       </div>
     </Router>

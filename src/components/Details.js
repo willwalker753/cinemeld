@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import apiURL from './util/apiURL';
 import './details.css';
@@ -8,11 +10,13 @@ class Details extends Component {
         super(props)
         this.state = {
             media_type: '',
-            movieDetails: {}
+            movieDetails: {},
+            redirectSimilar: false
         }
         this.formatMovieData = this.formatMovieData.bind(this);
         this.formatTvData = this.formatTvData.bind(this);
         this.closeDetails = this.closeDetails.bind(this);
+        this.similar = this.similar.bind(this);
     }
     async componentDidUpdate(oldProps) {
         if(oldProps !== this.props) {
@@ -133,8 +137,18 @@ class Details extends Component {
     closeDetails = () => {
         document.getElementById('details-component').classList.add('hidden');
     }
+    similar = () => {
+        this.setState({redirectSimilar: true});
+        this.props.searchTerm(this.props.id);
+    }
     render() {
-        let {media_type, movieDetails} = this.state;
+        let {media_type, movieDetails, redirectSimilar} = this.state;
+        if(redirectSimilar) {
+            if(window.location.pathname.includes('search')) {
+              //window.location.reload();
+            }
+            return <Redirect to={'/similar/'+this.props.media_type+'/'+this.props.id} />
+        }
         return (
             <div id='details-component' className='hidden'>
                 <div id='details-box-outer'>
@@ -165,7 +179,7 @@ class Details extends Component {
                         </div> 
                         <p>{movieDetails.overview}</p>
                         <div className='details-button-box'>
-                            <button className='details-similar-button'>Similar Movies <i className="fas fa-external-link-alt"></i></button>
+                            <button className='details-similar-button' onClick={this.similar}>Similar Movies <i className="fas fa-external-link-alt"></i></button>
                             <button className='details-favorites-button'>Add to Favorites <i className="far fa-star"></i></button>
                         </div>
                     </div>
@@ -198,7 +212,7 @@ class Details extends Component {
                             </div> 
                             <p>{movieDetails.overview}</p>
                             <div className='details-button-box'>
-                                <button className='details-similar-button'>Similar Shows <i className="fas fa-external-link-alt"></i></button>
+                                <button className='details-similar-button' onClick={this.similar}>Similar Shows <i className="fas fa-external-link-alt"></i></button>
                                 <button className='details-favorites-button'>Add to Favorites <i className="far fa-star"></i></button>
                             </div>
                         </div>
@@ -210,4 +224,16 @@ class Details extends Component {
     }
 }
 
-export default Details;
+const mapStateToProps = (state) => {
+    const { mediaType } = state;
+    return { media: mediaType };
+  }
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+        changeMedia: data => dispatch({ type: 'CHANGE_MEDIA', payload: data }),
+        searchTerm: data => dispatch({ type: 'CHANGE_TERM', payload: data })
+    }
+  }
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(Details);
