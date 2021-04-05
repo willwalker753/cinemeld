@@ -55,6 +55,7 @@
 }
 #details-header-row > img {
     width: 100px;
+    box-shadow: 1px 1px 5px rgb(34, 34, 34);
 }
 #details-header-row > div {
     padding: 20px 0 0 15px;
@@ -91,4 +92,27 @@
     padding: 1px 3px 3px 3px;
     border-radius: 5px;
     text-shadow: none;
+}
+.details-button-box {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.details-button-box > button {
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    padding: 4px 6px 3px 6px;
+    color: white;
+    margin-left: 15px;
+}
+.details-button-box > button:hover {
+    cursor: pointer;
+}
+.details-similar-button {
+    background-color: #3b6e3a;
+}
+.details-favorites-button {
+    background-color: #3c3e75
 }

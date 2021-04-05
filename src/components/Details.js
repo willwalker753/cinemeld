@@ -11,6 +11,7 @@ class Details extends Component {
             movieDetails: {}
         }
         this.formatMovieData = this.formatMovieData.bind(this);
+        this.formatTvData = this.formatTvData.bind(this);
         this.closeDetails = this.closeDetails.bind(this);
     }
     async componentDidUpdate(oldProps) {
@@ -20,6 +21,8 @@ class Details extends Component {
                 let data = res.data;
                 if(this.props.media_type === 'movie') {
                     data = this.formatMovieData(res.data);
+                } else if(this.props.media_type === 'tv') {
+                    data = this.formatTvData(res.data);
                 }
                 this.setState({ 
                     media_type: this.props.media_type,
@@ -102,8 +105,30 @@ class Details extends Component {
         }
         return data;
     }
-    formatTvData = () => {
-
+    formatTvData = data => {
+        let vote = data.vote_average;
+        let voteColor = '';
+        if(vote <= 3.5) {
+            voteColor = 'red';
+        } else if(vote <= 7) {
+            voteColor = 'yellow';
+        } else { 
+            voteColor = 'green' 
+        }
+        if(Number.isInteger(vote) && vote !== 10) {
+            vote = vote + '.0';
+            data.vote_average = vote;
+        }
+        data.vote_color = voteColor;
+        for(let g=0; g<data.genres.length; g++) {
+            if(g<1) {
+                data.genres[g].color = Math.floor(Math.random() * 5);         
+            } 
+            else {
+                data.genres[g].name = '';
+            }
+        }
+        return data;
     }
     closeDetails = () => {
         document.getElementById('details-component').classList.add('hidden');
@@ -139,6 +164,10 @@ class Details extends Component {
                             </div>
                         </div> 
                         <p>{movieDetails.overview}</p>
+                        <div className='details-button-box'>
+                            <button className='details-similar-button'>Similar Movies <i className="fas fa-external-link-alt"></i></button>
+                            <button className='details-favorites-button'>Add to Favorites <i className="far fa-star"></i></button>
+                        </div>
                     </div>
                 : '' }
                 {media_type === 'tv' ?
@@ -149,8 +178,9 @@ class Details extends Component {
                                 <div>
                                     <h3>{movieDetails.name}</h3>
                                     <p>{movieDetails.tagline}</p>
-                                    <p>{movieDetails.episode_run_time[0]} minutes per episode</p>
+                                    <p>{movieDetails.episode_run_time[0]} minute episodes</p>
                                     <div id='details-header-subrow'>
+                                        <p>TV Show</p>
                                         <p>
                                             <span className={'app-movie-vote-'+movieDetails.vote_color}>
                                                 {movieDetails.vote_average}
@@ -158,10 +188,19 @@ class Details extends Component {
                                             {movieDetails.vote_count+' reviews'}
                                         </p>
                                         <a id='details-imdb-link' href={'https://www.imdb.com/title/'+movieDetails.imdb_id} target='_blank' rel='noreferrer'><i className="fab fa-imdb"></i></a>
+                                        <div className='details-genre-box'>
+                                        {movieDetails.genres.map((genre, index) =>(
+                                            <p className={'app-genre-'+genre.color}>{genre.name}</p>
+                                        ))}
+                                    </div>
                                     </div>
                                 </div>
                             </div> 
                             <p>{movieDetails.overview}</p>
+                            <div className='details-button-box'>
+                                <button className='details-similar-button'>Similar Shows <i className="fas fa-external-link-alt"></i></button>
+                                <button className='details-favorites-button'>Add to Favorites <i className="far fa-star"></i></button>
+                            </div>
                         </div>
                     : '' } 
                 <div id='details-box-close' onClick={this.closeDetails}><i className="fas fa-times"></i></div>
