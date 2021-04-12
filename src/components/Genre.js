@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
+import allGenreList from './util/constants';
 import axios from 'axios';
 import InfiniteScroll from "react-infinite-scroll-component";
 import movieDataConverter from './util/movieDataConverter';
@@ -20,6 +21,7 @@ class Genre extends Component {
       hasMore: true,
       detailsMediaType: '',
       detailsId: '',
+      genreName: ''
     }
     this.getMoreData = this.getMoreData.bind(this);
     this.validatePoster = this.validatePoster.bind(this);
@@ -40,6 +42,12 @@ class Genre extends Component {
         movieList = this.validatePoster(movieList);
         movieList = movieDataConverter(movieList);
     })
+    for(let i=0; i<allGenreList.allGenreList.length; i++) {
+      if(allGenreList.allGenreList[i].id.toString() === this.state.id) {
+        this.setState({ genreName: allGenreList.allGenreList[i].name})
+        break;
+      }
+    }
     this.setState({ movieList: movieList });
   }
   componentDidUpdate(oldProps) {
@@ -89,10 +97,11 @@ class Genre extends Component {
     }, 300);
   }
   render() {
-    let { movieList, hasMore } = this.state;
+    let { movieList, hasMore, genreName } = this.state;
     return (
       <>
         <Nav />
+        <h2 id='app-title'>Results for {genreName} {(this.state.type === 'movie')? 'Movies': 'TV Shows'}</h2>
         <InfiniteScroll
           dataLength={movieList.length}
           next={this.getMoreData}

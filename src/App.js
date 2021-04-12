@@ -5,6 +5,7 @@ import Loading from './components/Loading';
 import axios from 'axios';
 import apiURL from './components/util/apiURL';
 import movieDataConverter from './components/util/movieDataConverter';
+import tempMovieList from './components/util/constants'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import './app.css';
 
@@ -12,7 +13,7 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      movieList: [],
+      movieList: tempMovieList.tempMovieList,
       page: 3,
       detailsMediaType: '',
       detailsId: '',
@@ -76,6 +77,7 @@ export default class App extends Component {
     return (
       <>
         <Nav />
+        <h2 id='app-title'>Popular Movies Now</h2>
         <InfiniteScroll
           dataLength={this.state.movieList.length}
           next={this.getMoreData}

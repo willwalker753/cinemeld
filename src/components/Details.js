@@ -17,6 +17,7 @@ class Details extends Component {
         this.formatTvData = this.formatTvData.bind(this);
         this.closeDetails = this.closeDetails.bind(this);
         this.similar = this.similar.bind(this);
+        this.clickOff = this.clickOff.bind(this);
     }
     async componentDidUpdate(oldProps) {
         if(oldProps !== this.props) {
@@ -141,6 +142,9 @@ class Details extends Component {
         this.setState({redirectSimilar: true});
         this.props.searchTerm(this.props.id);
     }
+    clickOff = e => {
+        if(e.target.id === 'details-component') {this.closeDetails()}
+    }
     render() {
         let {media_type, movieDetails, redirectSimilar} = this.state;
         if(redirectSimilar) {
@@ -150,7 +154,7 @@ class Details extends Component {
             return <Redirect to={'/similar/'+this.props.media_type+'/'+this.props.id} />
         }
         return (
-            <div id='details-component' className='hidden'>
+            <div id='details-component' className='hidden' onClick={this.clickOff}>
                 <div id='details-box-outer'>
                 {media_type === 'movie' ?
                     <div id='details-box-movie'>
@@ -171,7 +175,7 @@ class Details extends Component {
                                     <a id='details-imdb-link' href={'https://www.imdb.com/title/'+movieDetails.imdb_id} target='_blank' rel='noreferrer'><i className="fab fa-imdb"></i></a>
                                     <div className='details-genre-box'>
                                         {movieDetails.genres.map((genre, index) =>(
-                                            <p className={'app-genre-'+genre.color}>{genre.name}</p>
+                                            <a href={'/genre/movie/'+genre.id}><p className={'app-genre-'+genre.color}>{genre.name}</p></a>
                                         ))}
                                     </div>
                                 </div>
@@ -204,7 +208,7 @@ class Details extends Component {
                                         <a id='details-imdb-link' href={'https://www.imdb.com/title/'+movieDetails.imdb_id} target='_blank' rel='noreferrer'><i className="fab fa-imdb"></i></a>
                                         <div className='details-genre-box'>
                                         {movieDetails.genres.map((genre, index) =>(
-                                            <p className={'app-genre-'+genre.color}>{genre.name}</p>
+                                            <a href={'/genre/tv/'+genre.id}><p className={'app-genre-'+genre.color}>{genre.name}</p></a>
                                         ))}
                                     </div>
                                     </div>

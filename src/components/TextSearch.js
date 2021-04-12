@@ -89,10 +89,11 @@ class TextSearch extends Component {
     }, 300);
   }
   render() {
-    let { movieList, hasMore } = this.state;
+    let { movieList, hasMore, term } = this.state;
     return (
       <>
         <Nav />
+        <h2 id='app-title'>Search Results for {term}</h2>
         <InfiniteScroll
           dataLength={movieList.length}
           next={this.getMoreData}

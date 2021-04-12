@@ -21,6 +21,7 @@ class Search extends Component {
     this.closeSearch = this.closeSearch.bind(this);
     this.textSearch = this.textSearch.bind(this);
     this.genreSearch = this.genreSearch.bind(this);
+    this.clickOff = this.clickOff.bind(this);
   }
   onTextChange = e => {
     this.setState({ searchTerm: e.target.value });
@@ -58,6 +59,9 @@ class Search extends Component {
     });
     this.props.searchTerm(e.target.value);
   }
+  clickOff = e => {
+    if(e.target.id === 'search-box-outer') {this.closeSearch()}
+  }
   render() {
     let { genreList, redirectSearch, searchTerm, redirectGenre, genreId, genreType } = this.state;
     if(redirectSearch) {
@@ -73,7 +77,7 @@ class Search extends Component {
       return <Redirect to={'/genre/'+genreType+'/'+genreId} />
     }
     return (
-      <div id='search-box-outer' className='hidden'>
+      <div id='search-box-outer' className='hidden' onClick={this.clickOff}>
         <div id='search-box-inner'>
           <form id='search-form' onSubmit={this.textSearch}>
               <div id='search-form-text'>
