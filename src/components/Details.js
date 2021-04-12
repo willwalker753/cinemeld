@@ -179,7 +179,7 @@ class Details extends Component {
                         </div> 
                         <p>{movieDetails.overview}</p>
                         <div className='details-button-box'>
-                            <button className='details-similar-button' onClick={this.similar}>Similar Movies <i className="fas fa-external-link-alt"></i></button>
+                            <button className='details-similar-button' onClick={this.similar}>Similar Movies</button>
                             <button className='details-favorites-button'>Add to Favorites <i className="far fa-star"></i></button>
                         </div>
                     </div>
@@ -212,7 +212,7 @@ class Details extends Component {
                             </div> 
                             <p>{movieDetails.overview}</p>
                             <div className='details-button-box'>
-                                <button className='details-similar-button' onClick={this.similar}>Similar Shows <i className="fas fa-external-link-alt"></i></button>
+                                <button className='details-similar-button' onClick={this.similar}>Similar Shows</button>
                                 <button className='details-favorites-button'>Add to Favorites <i className="far fa-star"></i></button>
                             </div>
                         </div>

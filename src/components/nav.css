@@ -4,12 +4,32 @@
 #nav-box {
     display: flex;
     flex-direction: column;
-    align-items: center;
     height: 100%;
     position: fixed;
     top: 0;
     z-index: 2;
-    background-color: rgb(26, 26, 26);
+    background-color: rgba(26, 26, 26, 0.931);
+    width: 50px;
+    transition: width .2s ease-in-out;
+}
+#nav-box:hover {
+    width: 130px;
+}
+#nav-box > div > p {
+    opacity: 0;
+    margin: 0;
+    padding-left: 12px;
+}
+#nav-box:hover > div > p {
+    animation: font-fade .1s ease-in-out .1s 1 forwards;
+}
+@keyframes font-fade {
+    from{ opacity: 0;}
+    to{ opacity: 1;}
+}
+#nav-box > div {
+    display: flex;
+    align-items: center;
 }
 #nav-box > * {
     padding: 10px;
@@ -19,10 +39,17 @@
     cursor: pointer;
     color: #E50914;
 }
-#nav-box > i {
+#nav-box > div > i {
     font-size: 21px;
+    margin-left: 5px;
+}
+#nav-box:first-child {
+    padding-top: 10px;
 }
 #nav-logo {
     width: 30px;
-    margin-top: 10px;
+}
+#nav-logo-name {
+    padding-left: 7px!important;
+    font-weight: bold;
 }
