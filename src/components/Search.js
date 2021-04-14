@@ -9,6 +9,7 @@ class Search extends Component {
     super(props)
     this.state = {
         genreList: movieGenreList,
+        placeholder: '',
         searchTerm: '',
         genreId: '',
         media: 'tv',
@@ -63,7 +64,7 @@ class Search extends Component {
     if(e.target.id === 'search-box-outer') {this.closeSearch()}
   }
   render() {
-    let { genreList, redirectSearch, searchTerm, redirectGenre, genreId, genreType } = this.state;
+    let { genreList, redirectSearch, searchTerm, redirectGenre, genreId, genreType, placeholder } = this.state;
     if(redirectSearch) {
       if(window.location.pathname.includes('search')) {
         //window.location.reload();
@@ -80,18 +81,22 @@ class Search extends Component {
       <div id='search-box-outer' className='hidden' onClick={this.clickOff}>
         <div id='search-box-inner'>
           <form id='search-form' onSubmit={this.textSearch}>
+            <h2>Search by either text or genre</h2>
+            
               <div id='search-form-text'>
-                  <input 
-                      type='text' 
-                      placeholder='Search for your favorite movies and tv shows'
-                      onChange={this.onTextChange}
-                      onSubmit={this.textSearch}>
-                  </input>
-                  <i className='fas fa-search' title='Search' onClick={this.textSearch}></i>
+                <h3>Text</h3>
+                <i className='fas fa-search' title='Search' onClick={this.textSearch}></i>
+                <input 
+                    type='text' 
+                    placeholder={this.props.placeholder}
+                    onChange={this.onTextChange}
+                    onSubmit={this.textSearch}>
+                </input>
+                  
               </div>
-              <p>or search by genre</p>
+              
               <div id='search-form-genre'>
-                  <p>Type:</p>
+                  <h3>Genre type</h3>
                   <p id='genre-type-movie' onClick={() => this.onTypeChange('movie')} className='checked'>Movie</p>
                   <p id='genre-type-tv' onClick={() => this.onTypeChange('tv')} className='unchecked'>TV Show</p>
                   <select onChange={this.genreSearch}>

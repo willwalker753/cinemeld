@@ -8,7 +8,8 @@ class Nav extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      redirectHome: false
+      redirectHome: false,
+      searchPlaceholder: ''
     }
     this.home = this.home.bind(this);
     this.account = this.account.bind(this);
@@ -33,6 +34,9 @@ class Nav extends Component {
   }
   search = () => {
     let searchElement = document.getElementById('search-box-outer');
+    const exampleSearches = ['big bang theory', 'the walking dead', 'breaking bad', 'harry potter', 'justice league', 'saving private ryan', 'the godfather', 'star wars', 'the witcher', 'ozark'];
+    let placeholder = exampleSearches[Math.floor(Math.random() * exampleSearches.length)];
+    this.setState({ searchPlaceholder: placeholder });
     if(searchElement.className && searchElement.className === 'hidden') {
       document.getElementById('search-box-outer').classList.remove('hidden');
       document.getElementById('details-component').classList.remove('hidden');
@@ -42,7 +46,7 @@ class Nav extends Component {
     }
   }
   render() {
-    let { redirectHome } = this.state;
+    let { redirectHome, searchPlaceholder } = this.state;
     if(redirectHome) {
       return <Redirect to='/'/>
     }
@@ -68,7 +72,7 @@ class Nav extends Component {
           </div>
         </div>
         {/* <Account /> */}
-        <Search />
+        <Search placeholder={searchPlaceholder}/>
       </div>
     )
   }
