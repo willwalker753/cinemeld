@@ -13,16 +13,17 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      movieList: tempMovieList.tempMovieList,
+      movieList: [], //tempMovieList.tempMovieList
       page: 3,
       detailsMediaType: '',
-      detailsId: '',
+      detailsId: ''
     }
     this.getMoreData = this.getMoreData.bind(this);
     this.validatePoster = this.validatePoster.bind(this);
     this.movieClick = this.movieClick.bind(this);
   }
   async componentDidMount() {
+    document.getElementById('loading-component').classList.remove('hidden');
     let movieList = [];
     await axios.get(apiURL()+'/home?page=1')
       .then(res => {
@@ -33,6 +34,7 @@ export default class App extends Component {
         movieList = movieList.concat(res.data);
         movieList = this.validatePoster(movieList);
         movieList = movieDataConverter(movieList);
+        document.getElementById('loading-component').classList.add('hidden');
       })
     this.setState({ movieList: movieList });
   }

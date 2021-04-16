@@ -27,7 +27,7 @@
     margin: 5px 0 0 -35px;
 }
 #search-form {
-    width: 530px;
+    width: 500px;
     background-color: rgb(37, 37, 37);
     border-radius: 10px;
     padding: 15px 15px 15px 20px;
@@ -38,7 +38,8 @@
 #search-form-text {
     display: flex;
     align-items: center;
-    margin-left: 10px;
+    margin-left: 5px;
+    margin-bottom: 20px;
 }
 #search-form-text > input {
     background-color: rgb(34, 34, 34);
@@ -47,6 +48,7 @@
     font-size: 18px;
     border-radius: 10px;
     width: 400px;
+    margin-top: 2px;
     outline: none;
     color: white;
 }
@@ -73,15 +75,16 @@
 #search-box-close:hover, .checked:hover, .unchecked:hover, #search-form-text > i:hover, #search-form-genre > select:hover {
     cursor: pointer;
 }
-#search-form > p {
-    text-align: center;
-    margin-top: 12px;
-    margin-bottom: 0;
+#search-form > h3 {
+    margin: 0;
+    margin-bottom: 10px;
 }
 #search-form-genre {
     display: flex;
     align-items: center;
     margin-left: 10px;
+    height: 35px;
+    margin-bottom: 7px;
 }
 #search-form-genre > h3 {
     margin: 0;
@@ -90,12 +93,36 @@
     padding: 2px 5px 6px 5px;
     font-size: 18px;
 }
-#search-form-genre > select {
-    margin-left: 20px;
-    background-color: rgba(34, 34, 34);
+#search-form-genre-list-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 50px;
+}
+#search-form-genre-list {
+    display: flex;
+    flex-direction: column;
+    height: 455px;
+}
+#search-form-genre-list > a {
+    font-size: 17px;
+    transition: font-size .2s ease-in-out;
+    text-decoration: none;
     color: white;
-    font-size: 18px;
-    padding: 5px;
+}
+#search-form-genre-list > a:hover {
+    color: #E50914;
+    cursor: pointer;
+    font-size: 22px;
+    margin-bottom: -2px;
+}
+#search-form-genre-list-box > img {
+    width: 52%;
+    height: 52%;
     border-radius: 10px;
-    outline: none;
+    box-shadow: 2px 2px 3px rgb(19, 19, 19);
+}
+.tv-genre-selected {
+    height: 390px!important;
 }

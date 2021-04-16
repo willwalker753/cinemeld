@@ -11,18 +11,17 @@ class Search extends Component {
         genreList: movieGenreList,
         placeholder: '',
         searchTerm: '',
-        genreId: '',
         media: 'tv',
-        genreType: 'movie',
         redirectSearch: false,
-        redirectGenre: false
+        redirectGenre: false,
+        genreImage: 'https://github.com/willwalker753/organizing-your-react-code/blob/master/cinemeld-no-image.png?raw=true'
     }
     this.onTextChange = this.onTextChange.bind(this);
     this.onTypeChange = this.onTypeChange.bind(this);
     this.closeSearch = this.closeSearch.bind(this);
     this.textSearch = this.textSearch.bind(this);
-    this.genreSearch = this.genreSearch.bind(this);
     this.clickOff = this.clickOff.bind(this);
+    this.genreHover = this.genreHover.bind(this);
   }
   onTextChange = e => {
     this.setState({ searchTerm: e.target.value });
@@ -35,12 +34,15 @@ class Search extends Component {
         document.getElementById('genre-type-movie').classList.remove('unchecked');
         document.getElementById('genre-type-tv').classList.add('unchecked');
         document.getElementById('genre-type-tv').classList.remove('checked');
+        document.getElementById('search-form-genre-list').classList.remove('tv-genre-selected');
     } else {
         this.setState({ genreList: tvGenreList, genreType: 'tv' });
         document.getElementById('genre-type-movie').classList.add('unchecked');
         document.getElementById('genre-type-movie').classList.remove('checked');
         document.getElementById('genre-type-tv').classList.add('checked');
         document.getElementById('genre-type-tv').classList.remove('unchecked');
+        document.getElementById('search-form-genre-list').classList.add('tv-genre-selected');
+        
     }
   }
   closeSearch = () => {
@@ -53,59 +55,45 @@ class Search extends Component {
       this.props.searchTerm(this.state.searchTerm);
     }
   }
-  genreSearch = e => {
-    this.setState({
-      genreId: e.target.value,
-      redirectGenre: true
-    });
-    this.props.searchTerm(e.target.value);
+  genreHover = e => {
+    console.log(e.target.id)
+    this.setState({ genreImage: e.target.id })
   }
   clickOff = e => {
     if(e.target.id === 'search-box-outer') {this.closeSearch()}
   }
   render() {
-    let { genreList, redirectSearch, searchTerm, redirectGenre, genreId, genreType, placeholder } = this.state;
+    let { genreList, redirectSearch, searchTerm, genreType, genreImage } = this.state;
     if(redirectSearch) {
-      if(window.location.pathname.includes('search')) {
-        //window.location.reload();
-      }
       return <Redirect to={'/search/'+searchTerm} />
-    }
-    if(redirectGenre) {
-      if(window.location.pathname.includes('genre')) {
-        //window.location.reload();
-      }
-      return <Redirect to={'/genre/'+genreType+'/'+genreId} />
     }
     return (
       <div id='search-box-outer' className='hidden' onClick={this.clickOff}>
         <div id='search-box-inner'>
           <form id='search-form' onSubmit={this.textSearch}>
-            <h2>Search by either text or genre</h2>
-            
-              <div id='search-form-text'>
-                <h3>Text</h3>
-                <i className='fas fa-search' title='Search' onClick={this.textSearch}></i>
-                <input 
-                    type='text' 
-                    placeholder={this.props.placeholder}
-                    onChange={this.onTextChange}
-                    onSubmit={this.textSearch}>
-                </input>
-                  
+            <h3>Text Search</h3>
+            <div id='search-form-text'>
+              <i className='fas fa-search' title='Search' onClick={this.textSearch}></i>
+              <input 
+                  type='text' 
+                  placeholder={this.props.placeholder}
+                  onChange={this.onTextChange}
+                  onSubmit={this.textSearch}>
+              </input>
+            </div>
+            <h3>Genre Search</h3>
+            <div id='search-form-genre'>
+                <p id='genre-type-movie' onClick={() => this.onTypeChange('movie')} className='checked'>Movie</p>
+                <p id='genre-type-tv' onClick={() => this.onTypeChange('tv')} className='unchecked'>TV Show</p>
+            </div>
+            <div id='search-form-genre-list-box'>
+              <div id='search-form-genre-list'>
+                {genreList.map((item, index) => (
+                  <a key={index} id={item.img} onMouseEnter={this.genreHover} href={'/genre/'+genreType+'/'+item.id}>{item.name}</a>
+                ))}
               </div>
-              
-              <div id='search-form-genre'>
-                  <h3>Genre type</h3>
-                  <p id='genre-type-movie' onClick={() => this.onTypeChange('movie')} className='checked'>Movie</p>
-                  <p id='genre-type-tv' onClick={() => this.onTypeChange('tv')} className='unchecked'>TV Show</p>
-                  <select onChange={this.genreSearch}>
-                    <option disabled defaultValue selected>Genre</option>
-                      {genreList.map((item, index) => (
-                          <option key={index} value={item.id}>{item.name}</option>
-                      ))}
-                  </select>
-              </div>
+              <img src={genreImage} alt='genre'></img>
+            </div>
           </form>
           <div id='search-box-close' onClick={this.closeSearch}><i className="fas fa-times"></i></div>
         </div>
