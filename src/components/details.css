@@ -29,10 +29,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: -30px;
     position: relative;
-    right: 40px;
-    top: 10px;
+    left: 560px;
+    bottom: 328px;
+    margin-bottom: -30px;
 }
 #details-box-close:hover {
     cursor: pointer;

@@ -18,14 +18,17 @@
     top: 40px;
     margin-top: 10px;
     padding-left: 50px;
+    
 }
 .app-movie {
     background-color: rgba(65, 63, 63, 0.863);
+    border-radius: 5px;
 }
 .app-movie, .app-overlay {
     width: 181px;
     height: 270px;
     margin: 10px;
+    
 }
 .app-overlay {
     background-color: rgba(34, 34, 34, 0.863);
@@ -33,6 +36,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border-radius: 3px;
 }
 .app-overlay > h3 {
     text-align: center;

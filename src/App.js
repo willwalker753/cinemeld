@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Nav from './components/Nav';
 import Details from './components/Details';
 import Loading from './components/Loading';
@@ -9,7 +10,7 @@ import tempMovieList from './components/util/constants'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import './app.css';
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -34,6 +35,7 @@ export default class App extends Component {
         movieList = movieList.concat(res.data);
         movieList = this.validatePoster(movieList);
         movieList = movieDataConverter(movieList);
+        document.getElementById('app-title').classList.remove('hidden');
         document.getElementById('loading-component').classList.add('hidden');
       })
     this.setState({ movieList: movieList });
@@ -68,18 +70,19 @@ export default class App extends Component {
       detailsMediaType: media_type,
       detailsId: id,
     });
-    document.getElementById('loading-component').classList.remove('hidden');
-    setTimeout(function(){
-      document.getElementById('loading-component').classList.add('hidden');
-      document.getElementById('details-component').classList.remove('hidden');
-    }, 300);
+    //document.getElementById('loading-component').classList.remove('hidden');
+    // setTimeout(function(){
+    //   document.getElementById('loading-component').classList.add('hidden');
+    //   this.props.showDetails();
+    // }.bind(this), 300);
+    this.props.showDetails();
   }
   render() {
     let { movieList } = this.state;
     return (
       <>
         <Nav />
-        <h2 id='app-title'>Popular Movies Now</h2>
+        <h2 id='app-title' className='hidden'>Popular Movies Now</h2>
         <InfiniteScroll
           dataLength={this.state.movieList.length}
           next={this.getMoreData}
@@ -119,9 +122,23 @@ export default class App extends Component {
           </div>
         </InfiniteScroll>
         <Loading />
-        <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} />
+        {this.props.showPopup.details ? <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} /> : null}
       </>
     )
   }
 }
 
+const mapStateToProps = (state) => {
+  const { account, showPopup } = state;
+  return { loggedIn: account.loggedIn, showPopup };
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+      loggedIn: data => dispatch({ type: 'LOGGED_IN', payload: data }),
+      accountId: data => dispatch({ type: 'ACCOUNT_ID', payload: data }),
+      showDetails: () => dispatch({ type: 'SHOW_DETAILS'})
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

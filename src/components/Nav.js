@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
+import Account from './Account';
 import Search from './Search';
 import './nav.css';
 
@@ -30,19 +31,20 @@ class Nav extends Component {
     
   }
   account = () => {
-    this.props.loggedIn(true)
+    if(this.props.showPopup.account === true) {
+      this.props.closePopup();
+    } else {
+      this.props.showAccount();
+    }
   }
   search = () => {
-    let searchElement = document.getElementById('search-box-outer');
     const exampleSearches = ['big bang theory', 'the walking dead', 'breaking bad', 'harry potter', 'justice league', 'saving private ryan', 'the godfather', 'star wars', 'the witcher', 'ozark'];
     let placeholder = exampleSearches[Math.floor(Math.random() * exampleSearches.length)];
     this.setState({ searchPlaceholder: placeholder });
-    if(searchElement.className && searchElement.className === 'hidden') {
-      document.getElementById('search-box-outer').classList.remove('hidden');
-      document.getElementById('details-component').classList.remove('hidden');
-      document.getElementById('details-component').classList.add('hidden');
+    if(this.props.showPopup.search === true) {
+      this.props.closePopup();
     } else {
-      document.getElementById('search-box-outer').classList.add('hidden');
+      this.props.showSearch();
     }
   }
   render() {
@@ -71,21 +73,24 @@ class Nav extends Component {
             <p>Search</p>
           </div>
         </div>
-        {/* <Account /> */}
-        <Search placeholder={searchPlaceholder}/>
+        {this.props.showPopup.account ? <Account /> : null}
+        {this.props.showPopup.search ? <Search placeholder={searchPlaceholder}/> : null}
       </div>
     )
   }
 }
 const mapStateToProps = (state) => {
-  const { account } = state;
-  return { loggedIn: account.loggedIn };
+  const { account, showPopup } = state;
+  return { loggedIn: account.loggedIn, showPopup };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
       loggedIn: data => dispatch({ type: 'LOGGED_IN', payload: data }),
-      accountId: data => dispatch({ type: 'ACCOUNT_ID', payload: data })
+      accountId: data => dispatch({ type: 'ACCOUNT_ID', payload: data }),
+      closePopup: () => dispatch({ type: 'CLOSE_POPUP'}),
+      showSearch: () => dispatch({ type: 'SHOW_SEARCH'}),
+      showAccount: () => dispatch({ type: 'SHOW_ACCOUNT'})
   }
 }
 

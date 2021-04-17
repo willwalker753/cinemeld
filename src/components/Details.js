@@ -19,9 +19,9 @@ class Details extends Component {
         this.similar = this.similar.bind(this);
         this.clickOff = this.clickOff.bind(this);
     }
-    async componentDidUpdate(oldProps) {
-        if(oldProps !== this.props) {
-            await axios.get(apiURL()+'/details?type='+this.props.media_type+'&id='+this.props.id)
+    async componentDidMount() {
+        document.getElementById('loading-component').classList.remove('hidden');
+        await axios.get(apiURL()+'/details?type='+this.props.media_type+'&id='+this.props.id)
             .then(res => {
                 let data = res.data;
                 if(this.props.media_type === 'movie') {
@@ -33,8 +33,8 @@ class Details extends Component {
                     media_type: this.props.media_type,
                     movieDetails: data 
                 });
+                document.getElementById('loading-component').classList.add('hidden');
             });
-        }  
     }
     formatMovieData = data => {
         let year = data.release_date.slice(0,4);
@@ -136,7 +136,7 @@ class Details extends Component {
         return data;
     }
     closeDetails = () => {
-        document.getElementById('details-component').classList.add('hidden');
+        this.props.closePopup();
     }
     similar = () => {
         this.setState({redirectSimilar: true});
@@ -154,11 +154,12 @@ class Details extends Component {
             return <Redirect to={'/similar/'+this.props.media_type+'/'+this.props.id} />
         }
         return (
-            <div id='details-component' className='hidden' onClick={this.clickOff}>
+            <div id='details-component' onClick={this.clickOff}>
                 <div id='details-box-outer'>
                 {media_type === 'movie' ?
                     <div id='details-box-movie'>
                         <img id='details-backdrop' src={'https://image.tmdb.org/t/p/w500'+movieDetails.backdrop_path} alt='backdrop'></img>
+                        <div id='details-box-close' onClick={this.closeDetails}><i className="fas fa-times"></i></div>
                         <div id='details-header-row'>
                             <img src={'https://image.tmdb.org/t/p/w500'+movieDetails.poster_path} alt='backdrop'></img>
                             <div>
@@ -191,6 +192,7 @@ class Details extends Component {
                 {media_type === 'tv' ?
                     <div id='details-box-movie'>
                             <img id='details-backdrop' src={'https://image.tmdb.org/t/p/w500'+movieDetails.backdrop_path} alt='backdrop'></img>
+                            <div id='details-box-close' onClick={this.closeDetails}><i className="fas fa-times"></i></div>
                             <div id='details-header-row'>
                                 <img src={'https://image.tmdb.org/t/p/w500'+movieDetails.poster_path} alt='backdrop'></img>
                                 <div>
@@ -221,7 +223,6 @@ class Details extends Component {
                             </div>
                         </div>
                     : '' } 
-                <div id='details-box-close' onClick={this.closeDetails}><i className="fas fa-times"></i></div>
                 </div>
             </div>
         )
@@ -236,7 +237,8 @@ const mapStateToProps = (state) => {
   const mapDispatchToProps = dispatch => {
     return {
         changeMedia: data => dispatch({ type: 'CHANGE_MEDIA', payload: data }),
-        searchTerm: data => dispatch({ type: 'CHANGE_TERM', payload: data })
+        searchTerm: data => dispatch({ type: 'CHANGE_TERM', payload: data }),
+        closePopup: () => dispatch({ type: 'CLOSE_POPUP'})
     }
   }
   

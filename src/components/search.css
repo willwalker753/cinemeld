@@ -120,7 +120,7 @@
 #search-form-genre-list-box > img {
     width: 52%;
     height: 52%;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: 2px 2px 3px rgb(19, 19, 19);
 }
 .tv-genre-selected {

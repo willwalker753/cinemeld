@@ -14,6 +14,7 @@ class Search extends Component {
         media: 'tv',
         redirectSearch: false,
         redirectGenre: false,
+        genreType: 'movie',
         genreImage: 'https://github.com/willwalker753/organizing-your-react-code/blob/master/cinemeld-no-image.png?raw=true'
     }
     this.onTextChange = this.onTextChange.bind(this);
@@ -41,12 +42,11 @@ class Search extends Component {
         document.getElementById('genre-type-movie').classList.remove('checked');
         document.getElementById('genre-type-tv').classList.add('checked');
         document.getElementById('genre-type-tv').classList.remove('unchecked');
-        document.getElementById('search-form-genre-list').classList.add('tv-genre-selected');
-        
+        document.getElementById('search-form-genre-list').classList.add('tv-genre-selected');  
     }
   }
   closeSearch = () => {
-    document.getElementById('search-box-outer').classList.add('hidden');
+    this.props.closePopup();
   }
   textSearch = e => {
     e.preventDefault();
@@ -68,7 +68,7 @@ class Search extends Component {
       return <Redirect to={'/search/'+searchTerm} />
     }
     return (
-      <div id='search-box-outer' className='hidden' onClick={this.clickOff}>
+      <div id='search-box-outer' onClick={this.clickOff}>
         <div id='search-box-inner'>
           <form id='search-form' onSubmit={this.textSearch}>
             <h3>Text Search</h3>
@@ -103,14 +103,15 @@ class Search extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { mediaType } = state;
-  return { media: mediaType };
+  const { mediaType, showPopup } = state;
+  return { media: mediaType, showPopup };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
       changeMedia: data => dispatch({ type: 'CHANGE_MEDIA', payload: data }),
-      searchTerm: data => dispatch({ type: 'CHANGE_TERM', payload: data })
+      searchTerm: data => dispatch({ type: 'CHANGE_TERM', payload: data }),
+      closePopup: () => dispatch({ type: 'CLOSE_POPUP'})
   }
 }
 
