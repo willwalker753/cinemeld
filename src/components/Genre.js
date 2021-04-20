@@ -28,10 +28,12 @@ class Genre extends Component {
     this.movieClick = this.movieClick.bind(this);
   }
   async componentDidMount() {
+    document.getElementById('loading-component').classList.remove('hidden');
     let type = this.props.match.params.type;
     let id = this.props.match.params.id;
     let movieList = [];
-    this.setState({ id: id, type: type })
+    this.setState({ id: id, type: type });
+    this.props.closePopup();
     await axios.get(apiURL()+'/genre?id='+id+'&type='+type+'&page=1')
     .then(res => {
         movieList = res.data;
@@ -41,6 +43,8 @@ class Genre extends Component {
         movieList = movieList.concat(res.data);
         movieList = this.validatePoster(movieList);
         movieList = movieDataConverter(movieList);
+        document.getElementById('app-title').classList.remove('hidden');
+        document.getElementById('loading-component').classList.add('hidden');
     })
     for(let i=0; i<allGenreList.allGenreList.length; i++) {
       if(allGenreList.allGenreList[i].id.toString() === this.state.id) {
@@ -90,18 +94,14 @@ class Genre extends Component {
       detailsMediaType: media_type,
       detailsId: id,
     });
-    document.getElementById('loading-component').classList.remove('hidden');
-    setTimeout(function(){
-      document.getElementById('loading-component').classList.add('hidden');
-      document.getElementById('details-component').classList.remove('hidden');
-    }, 300);
+    this.props.showDetails();
   }
   render() {
     let { movieList, hasMore, genreName } = this.state;
     return (
       <>
         <Nav />
-        <h2 id='app-title'>Results for {genreName} {(this.state.type === 'movie')? 'Movies': 'TV Shows'}</h2>
+        <h2 id='app-title' className='hidden'>Results for {genreName} {(this.state.type === 'movie')? 'Movies': 'TV Shows'}</h2>
         <InfiniteScroll
           dataLength={movieList.length}
           next={this.getMoreData}
@@ -142,21 +142,23 @@ class Genre extends Component {
           </div>
         </InfiniteScroll>
         <Loading />
-        <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} />
+        {this.props.showPopup.details ? <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} /> : null}
       </>
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  const { mediaType, termName } = state;
-  return { media: mediaType, term: termName };
+  const { mediaType, termName, showPopup } = state;
+  return { media: mediaType, term: termName, showPopup };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
       changeMedia: data => dispatch({ type: 'CHANGE_MEDIA', payload: data }),
-      searchTerm: data => dispatch({ type: 'CHANGE_TERM', payload: data })
+      searchTerm: data => dispatch({ type: 'CHANGE_TERM', payload: data }),
+      closePopup: () => dispatch({ type: 'CLOSE_POPUP' }),
+      showDetails: () => dispatch({ type: 'SHOW_DETAILS'})
   }
 }
 

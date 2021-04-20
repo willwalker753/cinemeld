@@ -56,7 +56,6 @@ class Search extends Component {
     }
   }
   genreHover = e => {
-    console.log(e.target.id)
     this.setState({ genreImage: e.target.id })
   }
   clickOff = e => {

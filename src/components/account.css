@@ -11,9 +11,105 @@
 }
 #account-box-inner {
     background-color: rgba(34, 34, 34);
+    width: 400px;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#account-box-inner > i {
+    align-self: flex-end;
+    height: 30px;
+    width: 30px;
+    margin-bottom: -30px;
+    color: #E50914;
+    background-color: rgb(37, 37, 37);
+    border-radius: 15px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+#account-box-inner > i:hover {
+    cursor: pointer;
 }
 #account-box-inner > form {
     display: flex;
     flex-direction: column;
     padding: 10px;
+}
+#account-box-inner > form > h2 {
+    margin: 0;
+}
+#account-box-inner > form > p {
+    margin-bottom: 5px;
+}
+.account-text-input {
+    width: 332px;
+    font-size: 18px;
+    padding: 5px 10px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+}
+#account-password {
+    display: flex;
+    justify-content: space-between;
+}
+#account-password > p:last-child {
+    font-style: italic;
+}
+#account-password > p:last-child:hover {
+    color: #E50914;
+    cursor: pointer;
+}
+#account-password > * {
+    margin-bottom: 5px;
+    margin-right: 0;
+}
+.account-password-input {
+    display: flex;
+    align-items: center;
+}
+#account-repeat-password {
+    margin-top: 10px;
+}
+.account-password-input > i {
+    position: relative;
+    right: 30px;
+    margin-right: -30px;
+    color: grey;
+}
+.account-submit {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+.account-submit > input {
+    margin-right: 15px;
+}
+.account-submit > * {
+    background-color: rgb(37, 37, 37);
+    border: 1px solid grey;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: white;
+    outline: none;
+}
+.account-submit > *:hover {
+    border-color: #E50914;
+    cursor: pointer;
+}
+#account-error-msg {
+    margin-top: 10px;
+}
+#account-error-msg > p {
+    margin: 0;
+    
+}
+#account-error-msg > p > i {
+    color: #E50914;
 }

@@ -8,6 +8,7 @@ import apiURL from './util/apiURL';
 import Nav from './Nav';
 import Details from './Details';
 import Loading from './Loading';
+import './textSearch.css';
 
 class TextSearch extends Component {
   constructor(props) {
@@ -19,19 +20,26 @@ class TextSearch extends Component {
       hasMore: true,
       detailsMediaType: '',
       detailsId: '',
+      noResults: false
     }
     this.getMoreData = this.getMoreData.bind(this);
     this.validatePoster = this.validatePoster.bind(this);
     this.movieClick = this.movieClick.bind(this);
   }
   async componentDidMount() {
+    document.getElementById('loading-component').classList.remove('hidden');
     let term = this.props.match.params.term;
     let movieList = [];
-    this.setState({ term: term })
+    this.setState({ term: term });
+    this.props.closePopup();
     if(term !== '') {
       await axios.get(apiURL()+'/search?term='+term+'&page=1')
         .then(res => {
           movieList = res.data;
+          if(movieList.length === 0) { this.setState({ noResults: true }) }
+          else { document.getElementById('app-title').classList.remove('hidden') }
+          
+          document.getElementById('loading-component').classList.add('hidden');
         })
       await axios.get(apiURL()+'/search?term='+term+'&page=2')
         .then(res => {
@@ -82,18 +90,20 @@ class TextSearch extends Component {
       detailsMediaType: media_type,
       detailsId: id,
     });
-    document.getElementById('loading-component').classList.remove('hidden');
-    setTimeout(function() {
-      document.getElementById('loading-component').classList.add('hidden');
-      document.getElementById('details-component').classList.remove('hidden');
-    }, 300);
+    this.props.showDetails();
   }
   render() {
-    let { movieList, hasMore, term } = this.state;
+    let { movieList, hasMore, term, noResults } = this.state;
     return (
       <>
         <Nav />
-        <h2 id='app-title'>Search Results for {term}</h2>
+        <h2 id='app-title' className='hidden'>Search Results for {term}</h2>
+        {noResults ? 
+          <div id='no-seach-results'>
+            <p>Oops we didn't find any results for "{term}"</p>
+            <button onClick={this.props.showSearch}><i className="fas fa-search"></i> Search for something else?</button>
+          </div> 
+        : null}
         <InfiniteScroll
           dataLength={movieList.length}
           next={this.getMoreData}
@@ -134,21 +144,24 @@ class TextSearch extends Component {
           </div>
         </InfiniteScroll>
         <Loading />
-        <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} />
+        {this.props.showPopup.details ? <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} /> : null}
       </>
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  const { mediaType, termName } = state;
-  return { media: mediaType, term: termName };
+  const { mediaType, termName, showPopup } = state;
+  return { media: mediaType, term: termName, showPopup };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
       changeMedia: data => dispatch({ type: 'CHANGE_MEDIA', payload: data }),
-      searchTerm: data => dispatch({ type: 'CHANGE_TERM', payload: data })
+      searchTerm: data => dispatch({ type: 'CHANGE_TERM', payload: data }),
+      closePopup: () => dispatch({ type: 'CLOSE_POPUP' }),
+      showDetails: () => dispatch({ type: 'SHOW_DETAILS'}),
+      showSearch: () => dispatch({ type: 'SHOW_SEARCH' })
   }
 }
 
