@@ -56,7 +56,7 @@ class Genre extends Component {
   }
   componentDidUpdate(oldProps) {
     if(oldProps.term !== this.props.term) {
-      window.location.reload();
+      this.componentDidMount()
     }
   }
   getMoreData() {

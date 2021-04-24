@@ -10,7 +10,7 @@ import Details from './Details';
 import Loading from './Loading';
 import './textSearch.css';
 
-class TextSearch extends Component {
+class Favorites extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -27,7 +27,6 @@ class TextSearch extends Component {
     this.movieClick = this.movieClick.bind(this);
   }
   async componentDidMount() {
-    console.log('yup')
     document.getElementById('loading-component').classList.remove('hidden');
     let term = this.props.match.params.term;
     let movieList = [];
@@ -53,7 +52,7 @@ class TextSearch extends Component {
   }
   componentDidUpdate(oldProps) {
     if(oldProps.term !== this.props.term) {
-      setTimeout(function(){ this.componentDidMount() }.bind(this), 150);
+      window.location.reload();
     }
   }
   getMoreData() {
@@ -166,4 +165,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TextSearch));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Favorites));

@@ -19,16 +19,19 @@ class TextSearch extends Component {
       hasMore: true,
       detailsMediaType: '',
       detailsId: '',
+      similarName: ''
     }
     this.getMoreData = this.getMoreData.bind(this);
     this.validatePoster = this.validatePoster.bind(this);
     this.movieClick = this.movieClick.bind(this);
   }
   async componentDidMount() {
+    document.getElementById('loading-component').classList.remove('hidden');
     let id = this.props.match.params.id;
     let type = this.props.match.params.type;
     let movieList = [];
     this.setState({ id: id, type: type })
+    this.props.closePopup();
     if(id !== '') {
       await axios.get(apiURL()+'/similar?type='+type+'&id='+id+'&page=1')
         .then(res => {
@@ -39,13 +42,15 @@ class TextSearch extends Component {
           movieList = movieList.concat(res.data.results);
           movieList = this.validatePoster(movieList);
           movieList = movieDataConverter(movieList);
+          document.getElementById('app-title').classList.remove('hidden');
+          document.getElementById('loading-component').classList.add('hidden');
         })
       this.setState({ movieList: movieList });
     }
   }
   componentDidUpdate(oldProps) {
     if(oldProps.term !== this.props.term) {
-      window.location.reload();
+      this.componentDidMount()
     }
   }
   getMoreData() {
@@ -83,17 +88,14 @@ class TextSearch extends Component {
       detailsMediaType: media_type,
       detailsId: id,
     });
-    document.getElementById('loading-component').classList.remove('hidden');
-    setTimeout(function() {
-      document.getElementById('loading-component').classList.add('hidden');
-      document.getElementById('details-component').classList.remove('hidden');
-    }, 300);
+    this.props.showDetails();
   }
   render() {
     let { movieList, hasMore } = this.state;
     return (
       <>
         <Nav />
+        <h2 id='app-title' className='hidden'>Similar to {this.props.similar.name}</h2>
         <InfiniteScroll
           dataLength={movieList.length}
           next={this.getMoreData}
@@ -134,21 +136,23 @@ class TextSearch extends Component {
           </div>
         </InfiniteScroll>
         <Loading />
-        <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} />
+        {this.props.showPopup.details ? <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} /> : null}
       </>
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  const { mediaType, termName } = state;
-  return { media: mediaType, term: termName };
+  const { mediaType, termName, showPopup, similar } = state;
+  return { media: mediaType, term: termName, showPopup, similar };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
       changeMedia: data => dispatch({ type: 'CHANGE_MEDIA', payload: data }),
-      searchTerm: data => dispatch({ type: 'CHANGE_TERM', payload: data })
+      searchTerm: data => dispatch({ type: 'CHANGE_TERM', payload: data }),
+      closePopup: () => dispatch({ type: 'CLOSE_POPUP' }),
+      showDetails: () => dispatch({ type: 'SHOW_DETAILS'})
   }
 }
 

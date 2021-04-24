@@ -139,6 +139,11 @@ class Details extends Component {
         this.props.closePopup();
     }
     similar = () => {
+        if(this.state.media_type === 'movie') {
+            this.props.similarName(this.state.movieDetails.title);
+        } else if(this.state.media_type === 'tv') {
+            this.props.similarName(this.state.movieDetails.name);
+        }
         this.setState({redirectSimilar: true});
         this.props.searchTerm(this.props.id);
     }
@@ -238,6 +243,7 @@ const mapStateToProps = (state) => {
     return {
         changeMedia: data => dispatch({ type: 'CHANGE_MEDIA', payload: data }),
         searchTerm: data => dispatch({ type: 'CHANGE_TERM', payload: data }),
+        similarName: data => dispatch({ type: 'SIMILAR_NAME', payload: data}),
         closePopup: () => dispatch({ type: 'CLOSE_POPUP'})
     }
   }
