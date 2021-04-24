@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import Account from './Account';
 import Search from './Search';
+import SignupInfo from './SignupInfo';
 import './nav.css';
 
 class Nav extends Component {
@@ -75,6 +76,7 @@ class Nav extends Component {
         </div>
         {this.props.showPopup.account ? <Account /> : null}
         {this.props.showPopup.search ? <Search placeholder={searchPlaceholder}/> : null}
+        {this.props.showPopup.signup ? <SignupInfo /> : null}
       </div>
     )
   }

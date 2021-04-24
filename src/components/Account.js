@@ -11,6 +11,7 @@ class Account extends Component {
             noUsername: false,
             noEmail: false,
             noPassword: false,
+            shortPassword: false,
             noRepeatPassword: false,
             passwordDontMatch: false,
             invalidLogin: false,
@@ -22,7 +23,9 @@ class Account extends Component {
             username: '',
             email: '',
             password: '',
-            passwordRepeat: ''
+            passwordRepeat: '',
+            signupButtonText: 'Sign Up',
+            loginButtonText: 'Login'
         }
         this.toggleLogin = this.toggleLogin.bind(this);
         this.textChange = this.textChange.bind(this);
@@ -77,7 +80,8 @@ class Account extends Component {
             passwordDontMatch: false,
             invalidLogin: false,
             emailTaken: false,
-            usernameTaken: false
+            usernameTaken: false,
+            loginButtonText: <i className="fas fa-spinner account-spinner"></i>
         });
         axios.post(apiURL() + '/user/login', {
             username: this.state.username,
@@ -89,6 +93,7 @@ class Account extends Component {
                 if(res.data.includes('username_empty')) { this.setState({ noUsername: true }) }
                 if(res.data.includes('password_empty')) { this.setState({ noPassword: true }) }
                 if(res.data.includes('no_match')) { this.setState({ invalidLogin: true }) }
+                this.setState({ loginButtonText: 'Login' })
             }
         })
     }
@@ -98,11 +103,13 @@ class Account extends Component {
             noUsername: false,
             noEmail: false,
             noPassword: false,
+            shortPassword: false,
             noRepeatPassword: false,
             passwordDontMatch: false,
             invalidLogin: false,
             emailTaken: false,
-            usernameTaken: false
+            usernameTaken: false,
+            signupButtonText: <i className="fas fa-spinner account-spinner"></i>
         });
         if(this.state.password !== this.state.passwordRepeat) { this.setState({ passwordDontMatch: true }) }
         else {
@@ -112,13 +119,20 @@ class Account extends Component {
                 password: this.state.password
             })
             .then(res => {
-                console.log(res)
-                if(Array.isArray(res.data)) {
-                    if(res.data.includes('username_empty')) { this.setState({ noUsername: true }) }
-                    if(res.data.includes('password_empty')) { this.setState({ noPassword: true }) }
-                    if(res.data.includes('email_empty')) { this.setState({ noEmail: true }) }
-                    if(res.data.includes('username_taken')) { this.setState({ usernameTaken: true }) }
-                    if(res.data.includes('email_taken')) { this.setState({ emailTaken: true }) }
+                if(res.data.type === 'fail') {
+                    if(res.data.data.includes('username_empty')) { this.setState({ noUsername: true }) }
+                    if(res.data.data.includes('password_empty')) { this.setState({ noPassword: true }) }
+                    if(res.data.data.includes('password_short')) { this.setState({ shortPassword: true }) }
+                    if(res.data.data.includes('email_empty')) { this.setState({ noEmail: true }) }
+                    if(res.data.data.includes('username_taken')) { this.setState({ usernameTaken: true }) }
+                    if(res.data.data.includes('email_taken')) { this.setState({ emailTaken: true }) }
+                    this.setState({ signupButtonText: 'Sign Up'})
+                } else if(res.data.type === 'success') {
+                    this.props.loggedIn(true);
+                    this.props.accountId(res.data.data[0].uid);
+                    this.props.username(res.data.data[0].username);
+                    this.props.email(res.data.data[0].email);
+                    this.props.showSignup();
                 }
             })
         }  
@@ -148,7 +162,7 @@ class Account extends Component {
                                 {this.state.invalidLogin ? <p><i className="fas fa-exclamation-circle"></i> Invalid login credentials</p> : null}
                             </div>
                             <div className='account-submit'>
-                                <input type='submit' value='Login'></input>
+                                <button type='submit'>{this.state.loginButtonText}</button>
                                 <button onClick={this.toggleLogin}>I want to sign up instead</button>  
                             </div>
                             
@@ -172,12 +186,13 @@ class Account extends Component {
                                 {this.state.noEmail ? <p><i className="fas fa-exclamation-circle"></i> Email is required</p> : null}
                                 {this.state.noUsername ? <p><i className="fas fa-exclamation-circle"></i> Username is required</p> : null}
                                 {this.state.noPassword ? <p><i className="fas fa-exclamation-circle"></i> Password is required</p> : null}
+                                {this.state.shortPassword ? <p><i className="fas fa-exclamation-circle"></i> Password too short</p> : null}
                                 {this.state.emailTaken ? <p><i className="fas fa-exclamation-circle"></i> Email address is already taken</p> : null}
                                 {this.state.usernameTaken ? <p><i className="fas fa-exclamation-circle"></i> Username is already taken</p> : null}
                                 {this.state.passwordDontMatch ? <p><i className="fas fa-exclamation-circle"></i> Passwords do not match</p> : null}
                             </div>
                             <div className='account-submit'>
-                                <input type='submit' value='Sign Up'></input> 
+                                <button type='submit'>{this.state.signupButtonText}</button> 
                                 <button onClick={this.toggleLogin}>Nevermind I have an account</button>   
                             </div>
                         </form>
@@ -195,7 +210,12 @@ const mapStateToProps = (state) => {
   
 const mapDispatchToProps = dispatch => {
     return {
-        closePopup: () => dispatch({ type: 'CLOSE_POPUP'})
+        showSignup: () => dispatch({ type: 'SHOW_SIGNUP'}),
+        closePopup: () => dispatch({ type: 'CLOSE_POPUP'}),
+        loggedIn: data => dispatch({ type: 'LOGGED_IN', payload: data }),
+        accountId: data => dispatch({ type: 'ACCOUNT_ID', payload: data }),
+        username: data => dispatch({ type: 'USERNAME', payload: data }),
+        email: data => dispatch({ type: 'EMAIL', payload: data })
     }
 }
 

@@ -1,6 +1,8 @@
 let init = {
     loggedIn: false,
-    accountId: ''
+    accountId: '',
+    username: '',
+    email: ''
 }
 
 const accountReducer = (state = init, action) => {
@@ -8,13 +10,33 @@ const accountReducer = (state = init, action) => {
         case('LOGGED_IN'):
             return state = {
                 loggedIn: action.payload,
-                accountId: state.accountId
+                accountId: state.accountId,
+                username: state.username,
+                email: state.email
             }   
         case('ACCOUNT_ID'):
             return state = {
                 loggedIn: state.loggedIn,
-                accountId: action.payload
+                accountId: action.payload,
+                username: state.username,
+                email: state.email
             }   
+        case('USERNAME'):
+            return state = {
+                loggedIn: state.loggedIn,
+                accountId: state.accountId,
+                username: action.payload,
+                email: state.email
+            }   
+        case('EMAIL'):
+            return state = {
+                loggedIn: state.loggedIn,
+                accountId: state.accountId,
+                username: state.username,
+                email: action.payload
+            }
+        case('SIGN_OUT'):
+            return state = init;
         default:
             return state;
     }

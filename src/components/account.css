@@ -87,7 +87,7 @@
     justify-content: center;
     margin-top: 15px;
 }
-.account-submit > input {
+.account-submit :first-child {
     margin-right: 15px;
 }
 .account-submit > * {
@@ -108,8 +108,16 @@
 }
 #account-error-msg > p {
     margin: 0;
-    
 }
 #account-error-msg > p > i {
     color: #E50914;
+}
+.account-spinner {
+    animation: accountSpinner .6s linear 0s infinite forwards;
+    position: relative;
+    left: 7px;
+}
+@keyframes accountSpinner {
+    from {transform: rotateZ(0deg)}
+    to {transform: rotateZ(360deg)}
 }
