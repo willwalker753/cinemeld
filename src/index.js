@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import allReducers from './reducers';
 import './index.css';
 import App from './App';
+import Favorites from './components/Favorites';
 import TextSearch from './components/TextSearch';
 import Genre from './components/Genre';
 import Similar from './components/Similar';
@@ -22,6 +23,9 @@ ReactDOM.render(
       <div>
         <Route exact path='/'>
           <App />
+        </Route>
+        <Route exact path='/favorites'>
+          <Favorites />
         </Route>
         <Route exact path='/search/:term'>
           <TextSearch />

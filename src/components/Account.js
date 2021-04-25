@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import apiURL from './util/apiURL';
 import './account.css';
@@ -89,11 +90,23 @@ class Account extends Component {
         })
         .then(res => {
             console.log(res)
-            if(Array.isArray(res.data)) {
-                if(res.data.includes('username_empty')) { this.setState({ noUsername: true }) }
-                if(res.data.includes('password_empty')) { this.setState({ noPassword: true }) }
-                if(res.data.includes('no_match')) { this.setState({ invalidLogin: true }) }
+            if(res.data.type === 'fail') {
+                if(res.data.data.includes('username_empty')) { this.setState({ noUsername: true }) }
+                if(res.data.data.includes('password_empty')) { this.setState({ noPassword: true }) }
+                if(res.data.data.includes('no_match')) { this.setState({ invalidLogin: true }) }
                 this.setState({ loginButtonText: 'Login' })
+            } else if(res.data.type === 'pass'){
+                console.log(res.data)
+                this.setState({ loginButtonText: <i className="fas fa-check"></i> });
+                this.props.accountId(res.data.data.uid);
+                this.props.username(res.data.data.username);
+                this.props.email(res.data.data.email);
+                window.sessionStorage.setItem('accountId', res.data.data.uid);
+                window.sessionStorage.setItem('username', res.data.data.username);
+                window.sessionStorage.setItem('email', res.data.data.email);
+                this.props.loggedIn(true);
+                this.props.closePopup();
+
             }
         })
     }
@@ -111,7 +124,7 @@ class Account extends Component {
             usernameTaken: false,
             signupButtonText: <i className="fas fa-spinner account-spinner"></i>
         });
-        if(this.state.password !== this.state.passwordRepeat) { this.setState({ passwordDontMatch: true }) }
+        if(this.state.password !== this.state.passwordRepeat) { this.setState({ passwordDontMatch: true, signupButtonText: 'Sign Up' }) }
         else {
             axios.post(apiURL() + '/user/signup', {
                 username: this.state.username,
@@ -127,17 +140,21 @@ class Account extends Component {
                     if(res.data.data.includes('username_taken')) { this.setState({ usernameTaken: true }) }
                     if(res.data.data.includes('email_taken')) { this.setState({ emailTaken: true }) }
                     this.setState({ signupButtonText: 'Sign Up'})
-                } else if(res.data.type === 'success') {
-                    this.props.loggedIn(true);
+                } else if(res.data.type === 'success') {    
                     this.props.accountId(res.data.data[0].uid);
                     this.props.username(res.data.data[0].username);
                     this.props.email(res.data.data[0].email);
+                    window.sessionStorage.setItem('accountId', res.data.data.uid);
+                    window.sessionStorage.setItem('username', res.data.data.username);
+                    window.sessionStorage.setItem('email', res.data.data.email);
+                    this.props.loggedIn(true);
                     this.props.showSignup();
                 }
             })
         }  
     }
     render() {
+        if(this.props.account.loggedIn === true && this.state.login === true) { return <Redirect to='/favorites'/> }
         return (
             <div id='account-box-outer' onClick={this.clickOff}>
                 <div id='account-box-inner'>
@@ -204,8 +221,8 @@ class Account extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const { showPopup } = state;
-    return { showPopup };
+    const { showPopup, account } = state;
+    return { showPopup, account };
 }
   
 const mapDispatchToProps = dispatch => {

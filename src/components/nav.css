@@ -13,7 +13,7 @@
     transition: width .2s ease-in-out;
 }
 #nav-box:hover {
-    width: 130px;
+    width: 160px;
 }
 #nav-box > div > p {
     opacity: 0;
@@ -22,6 +22,7 @@
 }
 #nav-box:hover > div > p {
     animation: font-fade .1s ease-in-out .1s 1 forwards;
+    white-space: nowrap;
 }
 @keyframes font-fade {
     from{ opacity: 0;}

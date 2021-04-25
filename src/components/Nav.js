@@ -16,9 +16,15 @@ class Nav extends Component {
     this.home = this.home.bind(this);
     this.account = this.account.bind(this);
     this.search = this.search.bind(this);
+    this.signOut = this.signOut.bind(this);
   }
   componentDidMount() {
-    
+    if(window.sessionStorage.getItem('accountId')) {
+      this.props.loggedIn(true);
+      this.props.accountId(window.sessionStorage.getItem('accountId'));
+      this.props.username(window.sessionStorage.getItem('username'));
+      this.props.email(window.sessionStorage.getItem('email'));
+    }
   }
   home = () => {
     if(window.location.pathname === '/') {
@@ -48,6 +54,10 @@ class Nav extends Component {
       this.props.showSearch();
     }
   }
+  signOut = () => {
+    this.props.signOut();
+    window.sessionStorage.clear();
+  }
   render() {
     let { redirectHome, searchPlaceholder } = this.state;
     if(redirectHome) {
@@ -67,12 +77,18 @@ class Nav extends Component {
           </div>
           <div onClick={this.account}>
             <i className="fas fa-user-circle" title='Account' ></i>
-            <p>Account</p>
+            <p>{this.props.account.loggedIn ? 'Account' : 'Login/Signup'}</p>
           </div>
           <div onClick={this.search}>
             <i className="fas fa-search" title='Search'></i>
             <p>Search</p>
           </div>
+          {this.props.account.loggedIn ?
+            <div onClick={this.signOut}>
+              <i className="fas fa-sign-out-alt" title='Sign Out'></i>
+              <p>Logout</p>
+            </div>
+          : null}
         </div>
         {this.props.showPopup.account ? <Account /> : null}
         {this.props.showPopup.search ? <Search placeholder={searchPlaceholder}/> : null}
@@ -83,7 +99,7 @@ class Nav extends Component {
 }
 const mapStateToProps = (state) => {
   const { account, showPopup } = state;
-  return { loggedIn: account.loggedIn, showPopup };
+  return { account, showPopup };
 }
 
 const mapDispatchToProps = dispatch => {
@@ -92,7 +108,12 @@ const mapDispatchToProps = dispatch => {
       accountId: data => dispatch({ type: 'ACCOUNT_ID', payload: data }),
       closePopup: () => dispatch({ type: 'CLOSE_POPUP'}),
       showSearch: () => dispatch({ type: 'SHOW_SEARCH'}),
-      showAccount: () => dispatch({ type: 'SHOW_ACCOUNT'})
+      showAccount: () => dispatch({ type: 'SHOW_ACCOUNT'}),
+      loggedIn: data => dispatch({ type: 'LOGGED_IN', payload: data }),
+      accountId: data => dispatch({ type: 'ACCOUNT_ID', payload: data }),
+      username: data => dispatch({ type: 'USERNAME', payload: data }),
+      email: data => dispatch({ type: 'EMAIL', payload: data }),
+      signOut: () => dispatch({ type: 'SIGN_OUT'})
   }
 }
 
