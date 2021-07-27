@@ -178,7 +178,9 @@ class Details extends Component {
                                         </span>  
                                         {movieDetails.vote_count+' reviews'}
                                     </p>
-                                    <a id='details-imdb-link' href={'https://www.imdb.com/title/'+movieDetails.imdb_id} target='_blank' rel='noreferrer'><i className="fab fa-imdb"></i></a>
+                                    {movieDetails.imdb_id !== null ?
+                                        <a id='details-imdb-link' href={'https://www.imdb.com/title/'+movieDetails.imdb_id} target='_blank' rel='noreferrer'><i className="fab fa-imdb"></i></a>
+                                    : null}
                                     <div className='details-genre-box'>
                                         {movieDetails.genres.map((genre, index) =>(
                                             <a href={'/genre/movie/'+genre.id}><p className={'app-genre-'+genre.color}>{genre.name}</p></a>

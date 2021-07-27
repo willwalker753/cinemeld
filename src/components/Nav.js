@@ -109,8 +109,6 @@ const mapDispatchToProps = dispatch => {
       closePopup: () => dispatch({ type: 'CLOSE_POPUP'}),
       showSearch: () => dispatch({ type: 'SHOW_SEARCH'}),
       showAccount: () => dispatch({ type: 'SHOW_ACCOUNT'}),
-      loggedIn: data => dispatch({ type: 'LOGGED_IN', payload: data }),
-      accountId: data => dispatch({ type: 'ACCOUNT_ID', payload: data }),
       username: data => dispatch({ type: 'USERNAME', payload: data }),
       email: data => dispatch({ type: 'EMAIL', payload: data }),
       signOut: () => dispatch({ type: 'SIGN_OUT'})
