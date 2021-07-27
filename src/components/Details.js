@@ -168,7 +168,7 @@ class Details extends Component {
                         <div id='details-header-row'>
                             <img src={'https://image.tmdb.org/t/p/w500'+movieDetails.poster_path} alt='backdrop'></img>
                             <div>
-                                <h3>{movieDetails.title}</h3>
+                                <h2>{movieDetails.title}</h2>
                                 <p>{movieDetails.tagline}</p>
                                 <p>{movieDetails.runtime.hours}{movieDetails.runtime.minutes} minutes</p>
                                 <div id='details-header-subrow'>
@@ -201,7 +201,7 @@ class Details extends Component {
                             <div id='details-header-row'>
                                 <img src={'https://image.tmdb.org/t/p/w500'+movieDetails.poster_path} alt='backdrop'></img>
                                 <div>
-                                    <h3>{movieDetails.name}</h3>
+                                    <h2>{movieDetails.name}</h2>
                                     <p>{movieDetails.tagline}</p>
                                     <p>{movieDetails.episode_run_time[0]} minute episodes</p>
                                     <div id='details-header-subrow'>

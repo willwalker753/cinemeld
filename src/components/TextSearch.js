@@ -31,7 +31,7 @@ class TextSearch extends Component {
     document.getElementById('loading-component').classList.remove('hidden');
     let term = this.props.match.params.term;
     let movieList = [];
-    this.setState({ term: term });
+    this.setState({ term: term, noResults: false });
     this.props.closePopup();
     if(term !== '') {
       await axios.get(apiURL()+'/search?term='+term+'&page=1')
