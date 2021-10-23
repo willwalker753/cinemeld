@@ -183,7 +183,7 @@ class Details extends Component {
                                     : null}
                                     <div className='details-genre-box'>
                                         {movieDetails.genres.map((genre, index) =>(
-                                            <a href={'/genre/movie/'+genre.id}><p className={'app-genre-'+genre.color}>{genre.name}</p></a>
+                                            <a href={'/genre/movie/'+genre.id} key={index}><p className={'app-genre-'+genre.color}>{genre.name}</p></a>
                                         ))}
                                     </div>
                                 </div>
@@ -217,7 +217,7 @@ class Details extends Component {
                                         <a id='details-imdb-link' href={'https://www.imdb.com/title/'+movieDetails.imdb_id} target='_blank' rel='noreferrer'><i className="fab fa-imdb"></i></a>
                                         <div className='details-genre-box'>
                                         {movieDetails.genres.map((genre, index) =>(
-                                            <a href={'/genre/tv/'+genre.id}><p className={'app-genre-'+genre.color}>{genre.name}</p></a>
+                                            <a href={'/genre/tv/'+genre.id} key={index}><p className={'app-genre-'+genre.color}>{genre.name}</p></a>
                                         ))}
                                     </div>
                                     </div>

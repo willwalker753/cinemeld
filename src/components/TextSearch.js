@@ -135,7 +135,7 @@ class TextSearch extends Component {
                   </p>
                   <div className='app-genre-box'>
                     {movie.genre_ids.map((genre, index) =>(
-                      <p className={'app-genre-'+genre.color}>{genre.name}</p>
+                      <p className={'app-genre-'+genre.color} key={index}>{genre.name}</p>
                     ))}
                   </div>
                   

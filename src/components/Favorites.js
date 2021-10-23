@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect, withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import axios from 'axios';
-import apiURL from './util/apiURL';
+// import axios from 'axios';
+// import apiURL from './util/apiURL';
 import Nav from './Nav';
 import Details from './Details';
 import Loading from './Loading';
