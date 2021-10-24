@@ -3,88 +3,70 @@ import { connect } from 'react-redux';
 import Nav from './components/Nav';
 import Details from './components/Details';
 import Loading from './components/Loading';
-import axios from 'axios';
-import apiURL from './components/util/apiURL';
-import movieDataConverter from './components/util/movieDataConverter';
-// import tempMovieList from './components/util/constants'
-import InfiniteScroll from 'react-infinite-scroll-component';
+import MoshowList from './components/moshowList/MoshowList';
+import { handleMoshowData } from './components/util/handleMoshowData';
 import './app.css';
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      movieList: [], //tempMovieList.tempMovieList
+      moshowData: [],
       page: 3,
       detailsMediaType: '',
       detailsId: ''
     }
     this.getMoreData = this.getMoreData.bind(this);
-    this.validatePoster = this.validatePoster.bind(this);
-    this.movieClick = this.movieClick.bind(this);
+    this.moshowClick = this.moshowClick.bind(this);
   }
+
   async componentDidMount() {
-    document.getElementById('loading-component').classList.remove('hidden');
-    let movieList = [];
-    await axios.get(apiURL()+'/home?page=1')
-      .then(res => {
-        movieList = res.data;
-      })
-    await axios.get(apiURL()+'/home?page=2')
-      .then(res => {
-        movieList = movieList.concat(res.data);
-        movieList = this.validatePoster(movieList);
-        movieList = movieDataConverter(movieList);
-        document.getElementById('app-title').classList.remove('hidden');
-        document.getElementById('loading-component').classList.add('hidden');
-      })
-    this.setState({ movieList: movieList });
+    let moshowDataPage1 = [], moshowDataPage2 = []
+    await handleMoshowData({ type: "home", page: "1"})
+    // .then(res => {
+    //   moshowDataPage1 = res
+    //   handleMoshowData({ type: "home", page: "2"})
+    // })
+    // .then(res => {
+    //   moshowDataPage2 = res
+    //   let moshowData = moshowDataPage1.concat(moshowDataPage2);
+    //   this.setState({ moshowData: moshowData });
+    // })
+    .catch(error => {
+      console.error(error)
+    })
   }
-  getMoreData = async() => {
-    if(this.state.page < 50) {
-      await axios.get(apiURL()+'/home?page='+this.state.page)
-      .then(res => {
-        let tempMovieList = this.validatePoster(res.data);
-        tempMovieList = movieDataConverter(tempMovieList);
-        let movieList = this.state.movieList;
-        movieList = movieList.concat(tempMovieList);
-        let nextPage = this.state.page + 1;
-        this.setState({ 
-          movieList: movieList,
-          page: nextPage
-        });
-      })
-    }
+
+  getMoreData = async () => {
+    let newMoshowData = await handleMoshowData({ type: "home", page: this.state.page})
+    let currentMoshowData = this.state.moshowData;
+    let moshowData = currentMoshowData.concat(newMoshowData)
+    let nextPage = this.state.page + 1;
+    this.setState({ 
+      moshowData: moshowData,
+      page: nextPage
+    });
   }
-  validatePoster = data => {
-    let newArr = [];
-    for(let i=0; i<data.length; i++) {
-      if(data[i].poster_path !== null || data[i].poster_path !== undefined) {
-        newArr.push(data[i]);
-      }
-    }
-    return newArr;
-  }
-  movieClick = (media_type, id) => {
+
+  moshowClick = (media_type, id) => {
     this.setState({
       detailsMediaType: media_type,
       detailsId: id,
     });
-    //document.getElementById('loading-component').classList.remove('hidden');
-    // setTimeout(function(){
-    //   document.getElementById('loading-component').classList.add('hidden');
-    //   this.props.showDetails();
-    // }.bind(this), 300);
     this.props.showDetails();
   }
+
   render() {
-    let { movieList } = this.state;
+    let { moshowData } = this.state;
     return (
       <>
         <Nav />
-        <h2 id='app-title' className='hidden'>Popular Movies Now</h2>
-        
-        <Loading />
+        <h2 id='app-title'>Popular Movies Now</h2>
+        {moshowData !== [] ?
+          <MoshowList moshowData={moshowData} getMoreData={this.getMoreData}/>
+          :
+          <Loading />
+        }
         {this.props.showPopup.details ? <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} /> : null}
       </>
     )
