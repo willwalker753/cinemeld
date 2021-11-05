@@ -24,12 +24,12 @@ class SignupInfo extends Component {
                     </div> 
                     <i id='signup-info-checkmark' className="far fa-check-circle"></i>
                     <h2>Thank you for signing up {this.props.account.username}!</h2>
-                    <p>
+                    {/* <p>
                         We have sent an email verification link to {this.props.account.email}. 
                         Verifying your email is needed before resetting your password 
                         so we know the email is going to the right place. 
                         Make sure to check your spam folder😊
-                    </p>
+                    </p> */}
                     <a href='/account'><button>Continue to Account Home</button></a>
                 </div>
             </div>

@@ -87,15 +87,12 @@
     justify-content: center;
     margin-top: 15px;
 }
-.account-submit :first-child {
-    margin-right: 15px;
-}
 .account-submit > * {
     background-color: rgb(37, 37, 37);
     border: 1px solid grey;
-    font-size: 16px;
+    font-size: 18px;
     border-radius: 5px;
-    padding: 5px 10px;
+    padding: 10px 40px;
     color: white;
     outline: none;
 }
@@ -114,8 +111,6 @@
 }
 .account-spinner {
     animation: accountSpinner .6s linear 0s infinite forwards;
-    position: relative;
-    left: 7px;
 }
 @keyframes accountSpinner {
     from {transform: rotateZ(0deg)}

@@ -37,10 +37,11 @@ class Nav extends Component {
     }
     
   }
-  account = () => {
+  account = (type) => {
     if(this.props.showPopup.account === true) {
       this.props.closePopup();
     } else {
+      this.props.navSelectionType(type)
       this.props.showAccount();
     }
   }
@@ -75,10 +76,24 @@ class Nav extends Component {
               </img>
             <p id='nav-logo-name'>Cinemeld</p>
           </div>
-          <div onClick={this.account}>
-            <i className="fas fa-user-circle" title='Account' ></i>
-            <p>{this.props.account.loggedIn ? 'Account' : 'Login/Signup'}</p>
-          </div>
+          {this.props.account.loggedIn ?
+            <div onClick={() => this.account("signup")}>
+              <i className="fas fa-user-circle" title='Account' ></i>
+              <p>Account</p>
+            </div>
+          :
+            <>
+              <div onClick={() => this.account("login")}>
+                <i className="fas fa-user-circle" title='Login' ></i>
+                <p>Login</p>
+              </div>
+              <div onClick={() => this.account("signup")}>
+                <i className="fas fa-user-plus" title='Signup' ></i>
+                <p>Sign&nbsp;Up</p>
+              </div>
+            </>
+          }
+          
           <div onClick={this.search}>
             <i className="fas fa-search" title='Search'></i>
             <p>Search</p>
@@ -111,7 +126,8 @@ const mapDispatchToProps = dispatch => {
       showAccount: () => dispatch({ type: 'SHOW_ACCOUNT'}),
       username: data => dispatch({ type: 'USERNAME', payload: data }),
       email: data => dispatch({ type: 'EMAIL', payload: data }),
-      signOut: () => dispatch({ type: 'SIGN_OUT'})
+      signOut: () => dispatch({ type: 'SIGN_OUT'}),
+      navSelectionType: data => dispatch({ type: 'NAV_SELECTION_TYPE', payload: data })
   }
 }
 

@@ -151,6 +151,9 @@ class Account extends Component {
                     this.props.showSignup();
                 }
             })
+            .catch(error => {
+                console.log(error)
+            })
         }  
     }
     render() {
@@ -161,10 +164,10 @@ class Account extends Component {
                     <div onClick={this.closeAccount}>
                         <i className="fas fa-times"></i>
                     </div>
-                    {this.state.login ? 
+                    {this.props.account.navSelectionType === "login" ? 
                         <form onSubmit={this.login}>
                             <h2>Login</h2>
-                            <p>Username or Email</p>
+                            <p>Email or Username</p>
                             <input className='account-text-input' autoComplete='off' id='account-username-input' onChange={this.textChange} type='text' placeholder=''></input>
                             <div id='account-password'>
                                 <p>Password</p>
@@ -182,7 +185,7 @@ class Account extends Component {
                             </div>
                             <div className='account-submit'>
                                 <button type='submit'>{this.state.loginButtonText}</button>
-                                <button onClick={this.toggleLogin}>I want to sign up instead</button>  
+                                {/* <button onClick={this.toggleLogin}>I want to sign up instead</button>   */}
                             </div>
                             
                         </form>
@@ -209,10 +212,11 @@ class Account extends Component {
                                 {this.state.emailTaken ? <p><i className="fas fa-exclamation-circle"></i> Email address is already taken</p> : null}
                                 {this.state.usernameTaken ? <p><i className="fas fa-exclamation-circle"></i> Username is already taken</p> : null}
                                 {this.state.passwordDontMatch ? <p><i className="fas fa-exclamation-circle"></i> Passwords do not match</p> : null}
+                                {this.state.unknownError ? <p><i className="fas fa-exclamation-circle"></i> We are sorry, there was an error during Sign Up. Please try again</p> : null}
                             </div>
                             <div className='account-submit'>
                                 <button type='submit'>{this.state.signupButtonText}</button> 
-                                <button onClick={this.toggleLogin}>Nevermind I have an account</button>   
+                                {/* <button onClick={this.toggleLogin}>Nevermind I have an account</button>    */}
                             </div>
                         </form>
                     }

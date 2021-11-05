@@ -1,5 +1,5 @@
 #signup-info-outer {
-    z-index: 1;
+    z-index: 2;
     position: fixed;
     top: 0;
     width: 100%;
@@ -16,7 +16,7 @@
     flex-direction: column;
     background-color: rgba(37, 37, 37);
     width: 500px;
-    height: 400px;
+    height: 315px;
     border-radius: 10px;
 }
 #signup-info-close {
@@ -51,9 +51,9 @@
     margin-top: 20px;
     background-color: rgb(37, 37, 37);
     border: 1px solid grey;
-    font-size: 16px;
+    font-size: 18px;
     border-radius: 5px;
-    padding: 5px 10px;
+    padding: 10px 20px;
     color: white;
     outline: none;
 }
