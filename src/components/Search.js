@@ -70,7 +70,7 @@ class Search extends Component {
       <div id='search-box-outer' onClick={this.clickOff}>
         <div id='search-box-inner'>
           <form id='search-form' onSubmit={this.textSearch}>
-            <h3>Text Search</h3>
+            <h3>Search by Name</h3>
             <div id='search-form-text'>
               <i className='fas fa-search' title='Search' onClick={this.textSearch}></i>
               <input 
@@ -80,7 +80,7 @@ class Search extends Component {
                   onSubmit={this.textSearch}>
               </input>
             </div>
-            <h3>Genre Search</h3>
+            <h3>Or by Genre</h3>
             <div id='search-form-genre'>
                 <p id='genre-type-movie' onClick={() => this.onTypeChange('movie')} className='checked'>Movie</p>
                 <p id='genre-type-tv' onClick={() => this.onTypeChange('tv')} className='unchecked'>TV Show</p>

@@ -1,32 +1,15 @@
 import axios from 'axios';
 import apiURL from './apiURL';
-import { genreList } from './constants';
+import { allGenreList } from './constants';
 
 // handles all steps of getting new data
-export const handleMoshowData = async (params) => {
-    // await getMoshowData(params.type, params.page)
-    // .then(apiResponse => { 
-    //     console.log("apiResponse ", apiResponse)
-    //     checkForPoster(apiResponse) 
-    // })
-    // .then(removedNoPosters => { movieDataConverter(removedNoPosters) })
-    // .then(moshowData => { return moshowData })
-    // .catch(error => { 
-    //     console.error(error);
-    //     return error;
-    // });
-    let moshowData
-    moshowData = await getMoshowData(params.type, params.page)
-    console.log("next step")
-    moshowData = checkForPoster(moshowData)
-}
-
-// Call api for list of movie/show data
-export const getMoshowData = async (type, page) => {
-    await axios.get(`${apiURL()}/${type}?page=${page}`)
+export const handleMoshowData = (params) => {
+    axios.get(`${apiURL()}/${params.type}?page=${params.page}`)
         .then(res => {
-            console.log("done getting page", page)
-            return res.data;
+            let moshowData = checkForPoster(res.data)
+            moshowData = movieDataConverter(moshowData)
+            console.log(moshowData)
+            return moshowData;
         })
         .catch(error => {
             console.error(error)
@@ -122,10 +105,10 @@ export const movieDataConverter = data => {
 
         for(let g=0; g<data[i].genre_ids.length; g++) {
             if(g<3) {
-                for(let a=0; a<genreList.allGenreList.length; a++) {
-                    if(data[i].genre_ids[g] === genreList.allGenreList[a].id) {
+                for(let a=0; a<allGenreList.length; a++) {
+                    if(data[i].genre_ids[g] === allGenreList[a].id) {
                         data[i].genre_ids[g] = {
-                            name: genreList.allGenreList[a].name,
+                            name: allGenreList[a].name,
                             color: Math.floor(Math.random() * 5)
                         }
                     }              

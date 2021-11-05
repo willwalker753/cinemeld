@@ -18,27 +18,27 @@
     flex-direction: column;
     align-items: center;
 }
-#account-box-inner > i {
+#account-box-inner > div {
     align-self: flex-end;
-    height: 30px;
-    width: 30px;
-    margin-bottom: -30px;
+    height: 34px;
+    width: 34px;
     color: #E50914;
-    background-color: rgb(37, 37, 37);
-    border-radius: 15px;
+    background-color: rgb(18,18,18);
+    border-radius: 17px;
     font-size: 18px;
     display: flex;
     justify-content: center;
     align-items: center;
     border: none;
 }
-#account-box-inner > i:hover {
+#account-box-inner > div:hover {
     cursor: pointer;
 }
 #account-box-inner > form {
     display: flex;
     flex-direction: column;
     padding: 10px;
+    margin-top: -30px;
 }
 #account-box-inner > form > h2 {
     margin: 0;

@@ -16,6 +16,13 @@ class MoShowList extends Component {
         this.setState({ moshowData: this.props.moshowData})
     }
 
+    componentDidUpdate(oldProps) {
+        console.log(this.props, oldProps)
+        if(this.props.moshowData !== oldProps.moshowData) {
+            this.setState({ moshowData: this.props.moshowData})
+        }
+    }
+
     render() {
         const { moshowData } = this.state;
 
@@ -42,7 +49,7 @@ class MoShowList extends Component {
                             </div>
                             <div className='app-overlay-box'>
                                 {moshowData.map((movie, index) => (
-                                    <div key={index} className ='app-overlay hidden-movie' onClick={() => this.movieClick(movie.media_type, movie.id)}>
+                                    <div key={index} className ='app-overlay hidden-movie' onClick={() => this.props.moshowClick(movie.media_type, movie.id)}>
                                         <h3>{movie.title}</h3>
                                         <p className='app-movie-date'>{movie.release_date}</p>
                                         <p>

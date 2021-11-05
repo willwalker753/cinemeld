@@ -16,15 +16,15 @@
     margin-left: 40px;
 }
 #search-box-close {
-    background-color: rgba(34, 34, 34);
-    height: 30px;
-    width: 30px;
+    background-color: rgb(18, 18, 18);
+    height: 34px;
+    width: 34px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 15px;
+    border-radius: 18px;
     color: #E50914;
-    margin: 5px 0 0 -35px;
+    margin: 12px 0 0 -45px;
 }
 #search-form {
     width: 500px;
@@ -76,8 +76,8 @@
     cursor: pointer;
 }
 #search-form > h3 {
-    margin: 0;
-    margin-bottom: 10px;
+    font-size: 24px;
+    margin: 10px;
 }
 #search-form-genre {
     display: flex;

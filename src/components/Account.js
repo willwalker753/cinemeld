@@ -158,7 +158,9 @@ class Account extends Component {
         return (
             <div id='account-box-outer' onClick={this.clickOff}>
                 <div id='account-box-inner'>
-                    <i onClick={this.closeAccount}className="fas fa-times"></i>
+                    <div onClick={this.closeAccount}>
+                        <i className="fas fa-times"></i>
+                    </div>
                     {this.state.login ? 
                         <form onSubmit={this.login}>
                             <h2>Login</h2>

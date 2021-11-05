@@ -4,7 +4,9 @@ import Nav from './components/Nav';
 import Details from './components/Details';
 import Loading from './components/Loading';
 import MoshowList from './components/moshowList/MoshowList';
-import { handleMoshowData } from './components/util/handleMoshowData';
+import axios from 'axios';
+import apiURL from './components/util/apiURL';
+import { checkForPoster, movieDataConverter } from './components/util/handleMoshowData';
 import './app.css';
 
 class App extends Component {
@@ -20,32 +22,29 @@ class App extends Component {
     this.moshowClick = this.moshowClick.bind(this);
   }
 
-  async componentDidMount() {
-    let moshowDataPage1 = [], moshowDataPage2 = []
-    await handleMoshowData({ type: "home", page: "1"})
-    // .then(res => {
-    //   moshowDataPage1 = res
-    //   handleMoshowData({ type: "home", page: "2"})
-    // })
-    // .then(res => {
-    //   moshowDataPage2 = res
-    //   let moshowData = moshowDataPage1.concat(moshowDataPage2);
-    //   this.setState({ moshowData: moshowData });
-    // })
-    .catch(error => {
-      console.error(error)
-    })
+  componentDidMount() {
+    this.getMoreData();
+    this.getMoreData();
   }
 
   getMoreData = async () => {
-    let newMoshowData = await handleMoshowData({ type: "home", page: this.state.page})
-    let currentMoshowData = this.state.moshowData;
-    let moshowData = currentMoshowData.concat(newMoshowData)
-    let nextPage = this.state.page + 1;
-    this.setState({ 
-      moshowData: moshowData,
-      page: nextPage
-    });
+    let page = this.state.page;
+    await axios.get(`${apiURL()}/home?page=${page}`)
+      .then(res => {
+        let rawMoshowData = checkForPoster(res.data)
+        let newMoshowData = movieDataConverter(rawMoshowData)
+        let currentMoshowData = this.state.moshowData;
+        let moshowData = currentMoshowData.concat(newMoshowData)
+        let nextPage = page + 1;
+        this.setState({ 
+          moshowData: moshowData,
+          page: nextPage
+        });
+      })
+      .catch(error => {
+        console.error(error)
+      })
+    
   }
 
   moshowClick = (media_type, id) => {
@@ -63,10 +62,11 @@ class App extends Component {
         <Nav />
         <h2 id='app-title'>Popular Movies Now</h2>
         {moshowData !== [] ?
-          <MoshowList moshowData={moshowData} getMoreData={this.getMoreData}/>
+          <MoshowList moshowData={moshowData} getMoreData={this.getMoreData} moshowClick={this.moshowClick}/>
           :
-          <Loading />
+          <Loading showByDefault={true}/>
         }
+        <Loading showByDefault={false}/>
         {this.props.showPopup.details ? <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} /> : null}
       </>
     )
