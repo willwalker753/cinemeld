@@ -34,8 +34,9 @@ class Details extends Component {
                     movieDetails: data 
                 });
                 document.getElementById('loading-component').classList.add('hidden');
-                if(document.getElementById('details-overview').offsetHeight >= 240) {
-                    document.getElementById('details-overview').classList.add('overflow-y-scroll')
+                let detailsOverviewEl = document.getElementById('details-overview')
+                if(detailsOverviewEl && detailsOverviewEl.offsetHeight >= 240) {
+                    detailsOverviewEl.classList.add('overflow-y-scroll')
                 }
             });
     }
@@ -152,6 +153,12 @@ class Details extends Component {
     }
     clickOff = e => {
         if(e.target.id === 'details-component') {this.closeDetails()}
+    }
+    componentWillUnmount = () => {
+        // this.props.closePopup();
+        this.setState = (state,callback)=>{
+            return;
+        };
     }
     render() {
         let {media_type, movieDetails, redirectSimilar} = this.state;

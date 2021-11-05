@@ -18,7 +18,6 @@ export const handleMoshowData = (params) => {
 
 // Removes indexes that do not have a poster
 export const checkForPoster = data => {
-    console.log("checking for poster", data)
     let newArr = [];
     for(let i=0; i<data.length; i++) {
       if(data[i].poster_path !== null || data[i].poster_path !== undefined) {

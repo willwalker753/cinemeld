@@ -58,7 +58,7 @@ class MoShowList extends Component {
                                         </p>
                                         <div className='app-genre-box'>
                                             {movie.genre_ids.map((genre, index) => (
-                                                <p className={'app-genre-'+genre.color}>{genre.name}</p>
+                                                <p key={index} className={'app-genre-'+genre.color}>{genre.name}</p>
                                             ))}
                                         </div>
                                     </div>
