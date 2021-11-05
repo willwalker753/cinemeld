@@ -34,6 +34,9 @@ class Details extends Component {
                     movieDetails: data 
                 });
                 document.getElementById('loading-component').classList.add('hidden');
+                if(document.getElementById('details-overview').offsetHeight >= 240) {
+                    document.getElementById('details-overview').classList.add('overflow-y-scroll')
+                }
             });
     }
     formatMovieData = data => {
@@ -189,7 +192,7 @@ class Details extends Component {
                                 </div>
                             </div>
                         </div> 
-                        <p>{movieDetails.overview}</p>
+                        <p id="details-overview">{movieDetails.overview}</p>
                         <div className='details-button-box'>
                             <button className='details-similar-button' onClick={this.similar}>Similar Movies</button>
                             <button className='details-favorites-button'>Add to Favorites <i className="far fa-star"></i></button>
@@ -205,7 +208,7 @@ class Details extends Component {
                                 <div>
                                     <h2>{movieDetails.name}</h2>
                                     <p>{movieDetails.tagline}</p>
-                                    <p>{movieDetails.episode_run_time[0]} minute episodes</p>
+                                    <p>{movieDetails.episode_run_time[0]} minutes per episode</p>
                                     <div id='details-header-subrow'>
                                         <p>TV Show</p>
                                         <p>
@@ -214,7 +217,7 @@ class Details extends Component {
                                             </span>  
                                             {movieDetails.vote_count+' reviews'}
                                         </p>
-                                        <a id='details-imdb-link' href={'https://www.imdb.com/title/'+movieDetails.imdb_id} target='_blank' rel='noreferrer'><i className="fab fa-imdb"></i></a>
+                                        {/* <a id='details-imdb-link' href={'https://www.imdb.com/title/'+movieDetails.imdb_id} target='_blank' rel='noreferrer'><i className="fab fa-imdb"></i></a> */}
                                         <div className='details-genre-box'>
                                         {movieDetails.genres.map((genre, index) =>(
                                             <a href={'/genre/tv/'+genre.id} key={index}><p className={'app-genre-'+genre.color}>{genre.name}</p></a>
@@ -223,7 +226,7 @@ class Details extends Component {
                                     </div>
                                 </div>
                             </div> 
-                            <p>{movieDetails.overview}</p>
+                            <p id="details-overview">{movieDetails.overview}</p>
                             <div className='details-button-box'>
                                 <button className='details-similar-button' onClick={this.similar}>Similar Shows</button>
                                 <button className='details-favorites-button'>Add to Favorites <i className="far fa-star"></i></button>

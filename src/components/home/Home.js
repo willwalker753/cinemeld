@@ -62,7 +62,7 @@ class App extends Component {
         <Nav />
         <h2 id='app-title'>Popular Movies Now</h2>
         {moshowData !== [] ?
-          <MoshowList moshowData={moshowData} getMoreData={this.getMoreData} moshowClick={this.moshowClick}/>
+          <MoshowList moshowData={moshowData} getMoreData={this.getMoreData} moshowClick={this.moshowClick} hasMore={true}/>
           :
           <Loading showByDefault={true}/>
         }

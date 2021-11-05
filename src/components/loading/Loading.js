@@ -2,10 +2,9 @@ import React from 'react';
 import './loading.css';
 
 function Loading(props) {
-    console.log(props)
-    let className = '';
-    if(props.showByDefault === false) {
-        className = 'hidden'
+    let className = 'hidden';
+    if(props.showByDefault === true) {
+        className = ''
     }
     return (
         <div id='loading-component' className={className}>

@@ -17,8 +17,7 @@ class MoShowList extends Component {
     }
 
     componentDidUpdate(oldProps) {
-        console.log(this.props, oldProps)
-        if(this.props.moshowData !== oldProps.moshowData) {
+        if(this.props !== oldProps) {
             this.setState({ moshowData: this.props.moshowData})
         }
     }
@@ -29,11 +28,10 @@ class MoShowList extends Component {
         if(moshowData !== []) {
             return (
                 <>
-                    <h2 id='app-title' className='hidden'>Popular Movies Now</h2>
                     <InfiniteScroll
                         dataLength={this.state.moshowData.length}
                         next={this.props.getMoreData}
-                        hasMore={true}
+                        hasMore={this.props.hasMore}
                         loader={<></>}
                     >
                         <div className='app-movie-box'>

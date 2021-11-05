@@ -8,40 +8,15 @@ let init = {
 const showPopup = (state = init, action) => {
     switch(action.type) {
         case('SHOW_DETAILS'):
-            return state = {
-                details: true,
-                search: false,
-                account: false,
-                signup: false
-            }   
+            return { ...init, details: true }
         case('SHOW_SEARCH'):
-            return state = {
-                details: false,
-                search: true,
-                account: false,
-                signup: false
-            } 
+            return { ...init, search: true }
         case('SHOW_ACCOUNT'):
-            return state = {
-                details: false,
-                search: false,
-                account: true,
-                signup: false
-            }  
+            return { ...init, account: true }
         case('SHOW_SIGNUP'):
-            return state = {
-                details: false,
-                search: false,
-                account: false,
-                signup: true
-            }
+            return { ...init, signup: true }
         case('CLOSE_POPUP'):
-            return state = {
-                details: false,
-                search: false,
-                account: false,
-                signup: false
-            }
+            return init;
         default:
             return state;
     }

@@ -76,6 +76,10 @@ class Nav extends Component {
               </img>
             <p id='nav-logo-name'>Cinemeld</p>
           </div>
+          <div onClick={this.search}>
+            <i className="fas fa-search" title='Search'></i>
+            <p>Search</p>
+          </div>
           {this.props.account.loggedIn ?
             <div onClick={() => this.account("signup")}>
               <i className="fas fa-user-circle" title='Account' ></i>
@@ -92,12 +96,7 @@ class Nav extends Component {
                 <p>Sign&nbsp;Up</p>
               </div>
             </>
-          }
-          
-          <div onClick={this.search}>
-            <i className="fas fa-search" title='Search'></i>
-            <p>Search</p>
-          </div>
+          }          
           {this.props.account.loggedIn ?
             <div onClick={this.signOut}>
               <i className="fas fa-sign-out-alt" title='Sign Out'></i>
