@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Nav from './components/Nav';
-import Details from './components/Details';
-import Loading from './components/Loading';
-import MoshowList from './components/moshowList/MoshowList';
+import Nav from '../nav/Nav';
+import Details from '../details/Details';
+import Loading from '../loading/Loading';
+import MoshowList from '../moshowList/MoshowList';
 import axios from 'axios';
-import apiURL from './components/util/apiURL';
-import { checkForPoster, movieDataConverter } from './components/util/handleMoshowData';
-import './app.css';
+import apiURL from '../util/apiURL';
+import { checkForPoster, movieDataConverter } from '../util/handleMoshowData';
+import './home.css';
 
 class App extends Component {
   constructor(props) {

@@ -3,11 +3,11 @@ import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import InfiniteScroll from "react-infinite-scroll-component";
-import movieDataConverter from './util/movieDataConverter';
-import apiURL from './util/apiURL';
-import Nav from './Nav';
-import Details from './Details';
-import Loading from './Loading';
+import movieDataConverter from '../../util/movieDataConverter';
+import apiURL from '../../util/apiURL';
+import Nav from '../../nav/Nav';
+import Details from '../../details/Details';
+import Loading from '../../loading/Loading';
 
 class TextSearch extends Component {
   constructor(props) {

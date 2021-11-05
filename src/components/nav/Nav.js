@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
-import Account from './Account';
-import Search from './Search';
-import SignupInfo from './SignupInfo';
+import Account from '../account/Account';
+import Search from '../search/Search';
+import SignupInfo from '../account/signupInfo/SignupInfo';
 import './nav.css';
 
 class Nav extends Component {

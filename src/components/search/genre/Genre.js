@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import allGenreList from './util/constants';
+import allGenreList from '../../util/constants';
 import axios from 'axios';
 import InfiniteScroll from "react-infinite-scroll-component";
-import movieDataConverter from './util/movieDataConverter';
-import apiURL from './util/apiURL';
-import Nav from './Nav';
-import Details from './Details';
-import Loading from './Loading';
+import movieDataConverter from '../../util/movieDataConverter';
+import apiURL from '../../util/apiURL';
+import Nav from '../../nav/Nav';
+import Details from '../../details/Details';
+import Loading from '../../loading/Loading';
 
 class Genre extends Component {
   constructor(props) {

@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import apiURL from './util/apiURL';
+import apiURL from '../util/apiURL';
 import './account.css';
 
 class Account extends Component {

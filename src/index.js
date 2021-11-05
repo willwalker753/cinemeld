@@ -4,11 +4,11 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import allReducers from './reducers';
 import './index.css';
-import App from './App';
-import Favorites from './components/Favorites';
-import TextSearch from './components/TextSearch';
-import Genre from './components/Genre';
-import Similar from './components/Similar';
+import Home from './components/home/Home';
+import Favorites from './components/account/Favorites';
+import TextSearch from './components/search/text/TextSearch';
+import Genre from './components/search/genre/Genre';
+import Similar from './components/search/similar/Similar';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ ReactDOM.render(
     <Router>
       <div>
         <Route exact path='/'>
-          <App />
+          <Home />
         </Route>
         <Route exact path='/favorites'>
           <Favorites />

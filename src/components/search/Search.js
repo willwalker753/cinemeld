@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { movieGenreList, tvGenreList } from './util/constants';
+import { movieGenreList, tvGenreList } from '../util/constants';
 import { connect } from 'react-redux';
 import './search.css';
 
