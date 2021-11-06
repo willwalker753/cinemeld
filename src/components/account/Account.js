@@ -98,10 +98,10 @@ class Account extends Component {
             } else if(res.data.type === 'pass'){
                 console.log(res.data)
                 this.setState({ loginButtonText: <i className="fas fa-check"></i> });
-                this.props.accountId(res.data.data.uid);
+                this.props.accountId(res.data.data.user_id);
                 this.props.username(res.data.data.username);
                 this.props.email(res.data.data.email);
-                window.sessionStorage.setItem('accountId', res.data.data.uid);
+                window.sessionStorage.setItem('accountId', res.data.data.user_id);
                 window.sessionStorage.setItem('username', res.data.data.username);
                 window.sessionStorage.setItem('email', res.data.data.email);
                 this.props.loggedIn(true);
@@ -141,10 +141,10 @@ class Account extends Component {
                     if(res.data.data.includes('email_taken')) { this.setState({ emailTaken: true }) }
                     this.setState({ signupButtonText: 'Sign Up'})
                 } else if(res.data.type === 'success') {    
-                    this.props.accountId(res.data.data[0].uid);
+                    this.props.accountId(res.data.data[0].user_id);
                     this.props.username(res.data.data[0].username);
                     this.props.email(res.data.data[0].email);
-                    window.sessionStorage.setItem('accountId', res.data.data.uid);
+                    window.sessionStorage.setItem('accountId', res.data.data.user_id);
                     window.sessionStorage.setItem('username', res.data.data.username);
                     window.sessionStorage.setItem('email', res.data.data.email);
                     this.props.loggedIn(true);

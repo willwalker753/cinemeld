@@ -30,7 +30,7 @@ class SignupInfo extends Component {
                         so we know the email is going to the right place. 
                         Make sure to check your spam folder😊
                     </p> */}
-                    <a href='/account'><button>Continue to Account Home</button></a>
+                    <a href='/favorites'><button>Continue to Account Home</button></a>
                 </div>
             </div>
         )

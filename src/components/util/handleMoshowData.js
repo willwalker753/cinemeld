@@ -20,7 +20,7 @@ export const handleMoshowData = (params) => {
 export const checkForPoster = data => {
     let newArr = [];
     for(let i=0; i<data.length; i++) {
-      if(data[i].poster_path !== null || data[i].poster_path !== undefined) {
+      if(data[i].poster_path !== null && data[i].poster_path !== undefined) {
         newArr.push(data[i]);
       }
     }
@@ -99,24 +99,32 @@ export const movieDataConverter = data => {
         if(Number.isInteger(vote) && vote !== 10) {
             vote = vote + '.0';
             data[i].vote_average = vote;
+        } else if(vote !== 10) {
+            data[i].vote_average = vote.toFixed(1)
         }
         data[i].vote_color = voteColor;
 
-        for(let g=0; g<data[i].genre_ids.length; g++) {
-            if(g<3) {
-                for(let a=0; a<allGenreList.length; a++) {
-                    if(data[i].genre_ids[g] === allGenreList[a].id) {
-                        data[i].genre_ids[g] = {
-                            name: allGenreList[a].name,
-                            color: Math.floor(Math.random() * 5)
-                        }
-                    }              
-                }          
-            } 
-            else {
-                data[i].genre_ids.splice(g,1);
+        if(data[i].genre_ids) {
+            for(let g=0; g<data[i].genre_ids.length; g++) {
+                if(g<3) {
+                    for(let a=0; a<allGenreList.length; a++) {
+                        if(data[i].genre_ids[g] === allGenreList[a].id) {
+                            data[i].genre_ids[g] = {
+                                name: allGenreList[a].name,
+                                color: Math.floor(Math.random() * 5)
+                            }
+                        }              
+                    }          
+                } 
+                else {
+                    data[i].genre_ids.splice(g,1);
+                }
             }
         }
+        else {
+            data.splice(i, 1)
+        }
+        
     }
     return data;
 }

@@ -35,7 +35,8 @@ class Similar extends Component {
         moshowData: [],
         page: 1
       })
-      this.componentDidMount()
+      // this.componentDidMount()
+      setTimeout(function(){ this.componentDidMount() }.bind(this), 150);
     }
   }
   getMoreData() {
