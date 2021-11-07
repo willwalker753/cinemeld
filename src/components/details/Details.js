@@ -244,7 +244,11 @@ class Details extends Component {
                         <p id="details-overview">{movieDetails.overview}</p>
                         <div className='details-button-box'>
                             <button className='details-similar-button' onClick={this.similar}>Similar Movies</button>
-                            <button className='details-favorites-button' onClick={this.favorites}>{favoritesButtonText}</button>
+                            {this.props.dontAddToFavorites ? 
+                                null
+                            :
+                                <button className='details-favorites-button' onClick={this.favorites}>{favoritesButtonText}</button>
+                            }
                         </div>
                     </div>
                 : '' }
@@ -278,7 +282,11 @@ class Details extends Component {
                             <p id="details-overview">{movieDetails.overview}</p>
                             <div className='details-button-box'>
                                 <button className='details-similar-button' onClick={this.similar}>Similar Shows</button>
-                                <button className='details-favorites-button' onClick={this.favorites}>{favoritesButtonText}</button>
+                                {this.props.dontAddToFavorites ? 
+                                    null
+                                :
+                                    <button className='details-favorites-button' onClick={this.favorites}>{favoritesButtonText}</button>
+                                }
                             </div>
                         </div>
                     : '' } 

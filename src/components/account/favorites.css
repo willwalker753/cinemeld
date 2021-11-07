@@ -9,14 +9,15 @@
     padding-left: 50px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-evenly;
+    margin-bottom: 50px;
 }
 
 .favorites-container-row {
     display: flex;
     align-items: center;
     font-size: 1.2rem;
-    margin: 25px 30px;
+    margin: 20px 0;
 }
 
 .favorites-container-row > img {
@@ -24,7 +25,11 @@
     border-radius: 5px;
     box-shadow: 2px 0px 13px 1px black;
     position: relative;
-    z-index: 5;
+    z-index: 1;
+}
+
+.favorites-container-row > img:hover {
+    cursor: pointer;
 }
 
 .favorites-container-row > div {
@@ -35,6 +40,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    min-width: 315px;
 }
 
 .favorites-container-row > div > h4 {
@@ -46,10 +52,6 @@
 .favorites-container-row > div > p {
     margin: 0;
     font-size: 16px;
-}
-
-.favorites-container-row > div > div {
-    /* text-align: center; */
 }
 
 .favorites-details-button, .favorites-delete-button {

@@ -13,9 +13,12 @@ class Favorites extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      deleteButtonText: <span><i className="far fa-trash-alt"></i> Delete</span>,
       redirectHome: false,
       favoritesData: [],
-      loading: true
+      loading: true,
+      detailsMediaType: '',
+      detailsId: ''
     }
 
   }
@@ -26,7 +29,6 @@ class Favorites extends Component {
     } else {
       axios.get(apiURL()+'/user/favorites/'+this.props.account.accountId)
       .then(res => {
-        console.log(res.data)
         let favoritesData = res.data;
         favoritesData = favoritesData.reverse(); // newest added will now be at top
         this.setState({ 
@@ -39,6 +41,7 @@ class Favorites extends Component {
       })
     }
   }
+
   componentDidUpdate(oldProps) {
     if(oldProps !== this.props) {
       if(this.props.account.loggedIn === false) {
@@ -47,8 +50,32 @@ class Favorites extends Component {
     }
   }
 
+  detailsClick = (media_type, id) => {
+    this.setState({
+      detailsMediaType: media_type,
+      detailsId: id,
+    });
+    this.props.showDetails();
+  }
+
+  deleteClick = (id, index) => {
+    let favoritesData = this.state.favoritesData;
+    favoritesData[index].loading = true;
+    this.setState({ favoritesData: favoritesData });
+    axios.delete(apiURL()+'/user/favorites/'+this.props.account.accountId+'/'+id)
+    .then(res => {
+      this.componentDidMount()
+    })
+    .catch(error => {
+      console.error(error)
+      favoritesData[index].loading = false;
+      this.setState({ favoritesData: favoritesData });
+      this.setState({ deleteButtonText: 'Please try again'})
+    })
+  }
+
   render() {
-    let { redirectHome, favoritesData, loading } = this.state;
+    let { redirectHome, favoritesData, loading, deleteButtonText } = this.state;
     if(redirectHome) { return <Redirect to='/' /> }
     return (
       <>
@@ -65,13 +92,17 @@ class Favorites extends Component {
               {favoritesData.map((favorite, index) => {
                 return (
                   <div key={index} className='favorites-container-row'>
-                    <img src={'https://image.tmdb.org/t/p/w500'+favorite.poster_path} alt="poster" />
+                    <img src={'https://image.tmdb.org/t/p/w500'+favorite.poster_path} alt="poster" onClick={() => this.detailsClick(favorite.type, favorite.moshow_id)}/>
                     <div>
                       <h4>{favorite.title}</h4>
                       <p><em>{favorite.tagline}</em></p>
                       <div>
-                        <button className="favorites-details-button"><i className="fas fa-info-circle"></i> Details</button>
-                        <button className="favorites-delete-button"><i className="far fa-trash-alt"></i> Delete</button>
+                        <button className="favorites-details-button" onClick={() => this.detailsClick(favorite.type, favorite.moshow_id)}><i className="fas fa-info-circle"></i> Details</button>
+                        {favorite.loading ? 
+                          <button className="favorites-delete-button" ><i className="fas fa-spinner account-spinner"></i></button>                  
+                        :                    
+                          <button className="favorites-delete-button" onClick={() => this.deleteClick(favorite.moshow_id, index)}>{deleteButtonText}</button>                  
+                        }
                       </div>
                     </div>
                   </div>
@@ -82,7 +113,7 @@ class Favorites extends Component {
         }
         
         <Loading showByDefault={loading}/>
-        {this.props.showPopup.details ? <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} /> : null}
+        {this.props.showPopup.details ? <Details media_type={this.state.detailsMediaType} id={this.state.detailsId} dontAddToFavorites={true} /> : null}
       </>
     )
   }

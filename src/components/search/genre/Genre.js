@@ -29,8 +29,8 @@ class Genre extends Component {
 
   async componentDidMount() {
     this.props.closePopup();
-    this.getMoreData();
-    this.getMoreData();
+    await this.getMoreData();
+    await this.getMoreData();
     for(let i=0; i<allGenreList.allGenreList.length; i++) {
       if(allGenreList.allGenreList[i].id.toString() === this.props.match.params.id) {
         this.setState({ genreName: allGenreList.allGenreList[i].name})
@@ -46,9 +46,9 @@ class Genre extends Component {
     }
   }
 
-  getMoreData() {
+  async getMoreData() {
     if(this.state.page < 50) {
-      axios.get(apiURL()+'/genre?id='+this.props.match.params.id+'&type='+this.props.match.params.type+'&page='+this.state.page)
+      await axios.get(apiURL()+'/genre?id='+this.props.match.params.id+'&type='+this.props.match.params.type+'&page='+this.state.page)
       .then(res => {
         let rawMoshowData = checkForPoster(res.data);
         let newMoshowData = movieDataConverter(rawMoshowData);

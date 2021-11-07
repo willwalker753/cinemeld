@@ -25,8 +25,8 @@ class Similar extends Component {
   }
   async componentDidMount() {
     this.props.closePopup();
-    this.getMoreData();
-    this.getMoreData();
+    await this.getMoreData();
+    await this.getMoreData();
   }
   componentDidUpdate(oldProps) {
     if(oldProps.term !== this.props.term) {
@@ -39,9 +39,9 @@ class Similar extends Component {
       setTimeout(function(){ this.componentDidMount() }.bind(this), 150);
     }
   }
-  getMoreData() {
+  async getMoreData() {
     if(this.state.page < 50) {
-      axios.get(apiURL()+'/similar?type='+this.props.match.params.type+'&id='+this.props.match.params.id+'&page='+this.state.page)
+      await axios.get(apiURL()+'/similar?type='+this.props.match.params.type+'&id='+this.props.match.params.id+'&page='+this.state.page)
       .then(res => {
         let rawMoshowData = checkForPoster(res.data.results);
         let newMoshowData = movieDataConverter(rawMoshowData);

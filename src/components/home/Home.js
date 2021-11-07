@@ -14,7 +14,7 @@ class Home extends Component {
     super(props)
     this.state = {
       moshowData: [],
-      page: 3,
+      page: 1,
       detailsMediaType: '',
       detailsId: ''
     }
@@ -22,9 +22,9 @@ class Home extends Component {
     this.moshowClick = this.moshowClick.bind(this);
   }
 
-  componentDidMount() {
-    this.getMoreData();
-    this.getMoreData();
+  async componentDidMount() {
+    await this.getMoreData();
+    await this.getMoreData();
   }
 
   getMoreData = async () => {

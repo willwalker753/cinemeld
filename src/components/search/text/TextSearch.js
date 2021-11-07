@@ -29,8 +29,8 @@ class TextSearch extends Component {
     document.getElementById('loading-component').classList.remove('hidden');
     this.props.closePopup();
     if(this.props.match.params.term !== '') {
-      this.getMoreData();
-      this.getMoreData();    
+      await this.getMoreData();
+      await this.getMoreData();    
     }
   }
 
@@ -44,9 +44,9 @@ class TextSearch extends Component {
     }
   }
 
-  getMoreData() {
+  async getMoreData() {
     if(this.state.page < 50) {
-      axios.get(apiURL()+'/search?term='+this.props.match.params.term+'&page='+this.state.page)
+      await axios.get(apiURL()+'/search?term='+this.props.match.params.term+'&page='+this.state.page)
       .then(res => {
         console.log(res.data)
         let rawMoshowData = checkForPoster(res.data);

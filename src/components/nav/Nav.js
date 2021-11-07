@@ -83,7 +83,7 @@ class Nav extends Component {
           {this.props.account.loggedIn ?
             <div onClick={() => this.account("signup")}>
               <i className="fas fa-user-circle" title='Account' ></i>
-              <p>Account</p>
+              <p>Favorites</p>
             </div>
           :
             <>
