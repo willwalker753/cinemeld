@@ -9,6 +9,7 @@ class Details extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            favoritesButtonText: <span>Add to Favorites <i className="far fa-star"></i></span>,
             media_type: '',
             movieDetails: {},
             redirectSimilar: false
@@ -18,7 +19,9 @@ class Details extends Component {
         this.closeDetails = this.closeDetails.bind(this);
         this.similar = this.similar.bind(this);
         this.clickOff = this.clickOff.bind(this);
+        this.favorites = this.favorites.bind(this);
     }
+
     async componentDidMount() {
         document.getElementById('loading-component').classList.remove('hidden');
         await axios.get(apiURL()+'/details?type='+this.props.media_type+'&id='+this.props.id)
@@ -40,6 +43,7 @@ class Details extends Component {
                 }
             });
     }
+
     formatMovieData = data => {
         let year = data.release_date.slice(0,4);
         let month = data.release_date.slice(5,7); 
@@ -114,6 +118,7 @@ class Details extends Component {
         }
         return data;
     }
+
     formatTvData = data => {
         let vote = data.vote_average;
         let voteColor = '';
@@ -139,9 +144,11 @@ class Details extends Component {
         }
         return data;
     }
+
     closeDetails = () => {
         this.props.closePopup();
     }
+
     similar = () => {
         if(this.state.media_type === 'movie') {
             this.props.similarName(this.state.movieDetails.title);
@@ -151,17 +158,52 @@ class Details extends Component {
         this.setState({redirectSimilar: true});
         this.props.searchTerm(this.props.id);
     }
+
     clickOff = e => {
         if(e.target.id === 'details-component') {this.closeDetails()}
     }
+
+    favorites = () => {
+        this.setState({ favoritesButtonText: <i className="fas fa-spinner account-spinner"></i> })
+        if(this.props.account.loggedIn) {
+            let postFavoritesData = {
+                "user_id": this.props.account.accountId,
+                "moshow_id": this.props.id,
+                "poster_path": this.state.movieDetails.poster_path,
+                "type": this.props.media_type,
+                "tagline": this.state.movieDetails.tagline
+            }
+            if(this.props.media_type === 'movie') {
+                postFavoritesData.title = this.state.movieDetails.title;
+                postFavoritesData.runtime = this.state.movieDetails.runtime.hours + this.state.movieDetails.runtime.minutes + " minutes";
+            } else if(this.props.media_type === 'tv') {
+                postFavoritesData.title = this.state.movieDetails.name;
+                postFavoritesData.runtime = this.state.movieDetails.episode_run_time[0] + " minutes per episode";
+            }
+            axios.post(apiURL()+'/user/favorites', postFavoritesData)
+            .then(res => {
+                console.log(res.data)
+                this.setState({ favoritesButtonText: 'Successfully Added!' })
+            })
+            .catch(error => {
+                console.error(error) 
+                this.setState({ favoritesButtonText: 'Unable to Add Favorite' })
+            })
+        }
+        else {
+            this.setState({ favoritesButtonText: 'Please Login to Add' })
+        }
+    }
+
     componentWillUnmount = () => {
         // this.props.closePopup();
         this.setState = (state,callback)=>{
             return;
         };
     }
+
     render() {
-        let {media_type, movieDetails, redirectSimilar} = this.state;
+        let {media_type, movieDetails, redirectSimilar, favoritesButtonText} = this.state;
         if(redirectSimilar) {
             if(window.location.pathname.includes('search')) {
               //window.location.reload();
@@ -202,7 +244,7 @@ class Details extends Component {
                         <p id="details-overview">{movieDetails.overview}</p>
                         <div className='details-button-box'>
                             <button className='details-similar-button' onClick={this.similar}>Similar Movies</button>
-                            <button className='details-favorites-button'>Add to Favorites <i className="far fa-star"></i></button>
+                            <button className='details-favorites-button' onClick={this.favorites}>{favoritesButtonText}</button>
                         </div>
                     </div>
                 : '' }
@@ -236,7 +278,7 @@ class Details extends Component {
                             <p id="details-overview">{movieDetails.overview}</p>
                             <div className='details-button-box'>
                                 <button className='details-similar-button' onClick={this.similar}>Similar Shows</button>
-                                <button className='details-favorites-button'>Add to Favorites <i className="far fa-star"></i></button>
+                                <button className='details-favorites-button' onClick={this.favorites}>{favoritesButtonText}</button>
                             </div>
                         </div>
                     : '' } 
@@ -247,8 +289,8 @@ class Details extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const { mediaType } = state;
-    return { media: mediaType };
+    const { mediaType, account } = state;
+    return { media: mediaType, account: account };
   }
   
   const mapDispatchToProps = dispatch => {

@@ -9,7 +9,7 @@ import apiURL from '../util/apiURL';
 import { checkForPoster, movieDataConverter } from '../util/handleMoshowData';
 import './home.css';
 
-class App extends Component {
+class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -86,4 +86,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
